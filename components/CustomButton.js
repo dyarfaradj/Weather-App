@@ -1,20 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import FrontPage from "./components/FrontPage";
+import { Button } from "react-native-elements";
 
-export default function App() {
+export default CustomButton = props => {
   return (
     <View style={styles.container}>
-      <FrontPage />
+      <Button title={props.title}></Button>
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    flex: 1
   }
 });
