@@ -7,7 +7,9 @@ export default CustomInputfield = props => {
     <View style={styles.container}>
       <Input
         style={styles.textInput}
+        label={props.label}
         placeholder={props.placeholder}
+        placeholderTextColor="white"
         errorStyle={props.errorStyle ? props.errorStyle : { color: "red" }}
         errorMessage={props.errorMessage ? props.errorMessage : ""}
       />
@@ -16,9 +18,14 @@ export default CustomInputfield = props => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    height: "100%",
+    width: "100%"
   },
   textInput: {
-    color: "green"
+    lineHeight: 22,
+    fontSize: 17,
+    backgroundColor: "#3f51b5",
+    color: "#ffffff"
   }
 });
