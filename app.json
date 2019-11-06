@@ -4,6 +4,10 @@
     "slug": "Weather",
     "privacy": "public",
     "sdkVersion": "35.0.0",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dyarfarad.weatherapp"
+    },
     "platforms": [
       "ios",
       "android",
@@ -23,8 +27,5 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    }
   }
 }

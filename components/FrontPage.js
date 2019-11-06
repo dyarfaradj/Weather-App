@@ -43,7 +43,7 @@ export default class FrontPage extends Component {
     this.setState({
       refreshing: true
     });
-    console.log("ä");
+    this.fetchData();
     this.setState({
       refreshing: false
     });
@@ -53,7 +53,12 @@ export default class FrontPage extends Component {
     return (
       <View style={styles.container}>
         <StatusBarBackground style={{ backgroundColor: "black" }} />
-        <KeyboardAvoidingView behavior="padding" enabled>
+        <KeyboardAvoidingView
+          style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+          behavior="padding"
+          enabled
+          keyboardVerticalOffset={100}
+        >
           <ScrollView
             refreshControl={
               <RefreshControl

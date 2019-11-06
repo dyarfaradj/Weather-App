@@ -23,10 +23,13 @@ export default class ActionBar extends Component {
       >
         <CustomInputfield
           label="Longitude"
-          placeholder="lot"
+          placeholder="Enter..."
           onChangeText={text => this.setState({ lot })}
         ></CustomInputfield>
-        <CustomInputfield label="Latitude" placeholder="lot"></CustomInputfield>
+        <CustomInputfield
+          label="Latitude"
+          placeholder="Enter..."
+        ></CustomInputfield>
         <CustomButton title="Search"></CustomButton>
       </LinearGradient>
     );
