@@ -16,7 +16,8 @@ export default class FrontPage extends Component {
     super();
     this.state = {
       fetchedData: [],
-      refreshing: false
+      refreshing: false,
+      approvedTime: ""
     };
   }
 
@@ -31,6 +32,7 @@ export default class FrontPage extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
+          approvedTime: data.approvedTime,
           fetchedData: data.timeSeries.slice(0, 10)
         });
       })
@@ -67,7 +69,7 @@ export default class FrontPage extends Component {
               />
             }
           >
-            <Text>Approved time: </Text>
+            <Text>Approved time: {this.state.approvedTime}</Text>
             <WeatherList list={this.state.fetchedData} />
           </ScrollView>
           <ActionBar />
