@@ -11,7 +11,7 @@ import {
 import WeatherList from "./WeatherList";
 import ActionBar from "./ActionBar";
 import StatusBarBackground from "./StatusBarBackground";
-
+import NavigationMenu from "./NavigationMenu";
 export default class FrontPage extends Component {
   constructor() {
     super();
@@ -85,7 +85,8 @@ export default class FrontPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBarBackground style={{ backgroundColor: "black" }} />
+        {/* <StatusBarBackground style={{ backgroundColor: "black" }} /> */}
+        <NavigationMenu />
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
           <ScrollView
             refreshControl={

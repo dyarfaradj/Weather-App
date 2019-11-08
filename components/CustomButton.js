@@ -5,7 +5,7 @@ import { Button } from "react-native-elements";
 export default CustomButton = props => {
   return (
     <View style={styles.container}>
-      <Button title={props.title}></Button>
+      <Button onPress={props.onPress} title={props.title}></Button>
     </View>
   );
 };

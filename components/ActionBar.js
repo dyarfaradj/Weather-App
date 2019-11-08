@@ -8,9 +8,17 @@ export default class ActionBar extends Component {
   constructor() {
     super();
     this.state = {
-      lot: "",
-      lat: ""
+      lot: "14.333",
+      lat: "60.383"
     };
+  }
+
+  onInputChange = (name, value) => {
+    console.log("name: ", name, " value: ", value);
+    this.setState({ [name]: value });
+  };
+  getData() {
+    console.log(this.state.lot + "  lol : " + this.state.lat);
   }
 
   render() {
@@ -23,16 +31,24 @@ export default class ActionBar extends Component {
       >
         <CustomInputfield
           label="Longitude"
-          placeholder="Enter..."
-          onChangeText={text => this.setState({ lot })}
+          placeholder={"Enter..."}
+          onChangeText={text => this.onInputChange("lot", text)}
+          name="lot"
+          value={this.state.lot}
           returnKeyType={"next"}
         ></CustomInputfield>
         <CustomInputfield
           label="Latitude"
           placeholder="Enter..."
           returnKeyType={"Search"}
+          onChangeText={text => this.onInputChange("lat", text)}
+          name="lat"
+          value={this.state.lat}
         ></CustomInputfield>
-        <CustomButton title="Search"></CustomButton>
+        <CustomButton
+          onPress={() => this.getData()}
+          title="Search"
+        ></CustomButton>
       </LinearGradient>
     );
   }

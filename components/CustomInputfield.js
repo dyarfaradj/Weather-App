@@ -12,6 +12,8 @@ export default CustomInputfield = props => {
         label={props.label}
         placeholder={props.placeholder}
         placeholderTextColor="white"
+        onChangeText={props.onChangeText}
+        name={props.name}
         errorStyle={props.errorStyle ? props.errorStyle : { color: "red" }}
         errorMessage={props.errorMessage ? props.errorMessage : ""}
       />
