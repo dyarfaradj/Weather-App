@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   RefreshControl,
-  Text
+  Text,
+  AsyncStorage
 } from "react-native";
 import WeatherList from "./WeatherList";
 import ActionBar from "./ActionBar";
@@ -26,19 +27,49 @@ export default class FrontPage extends Component {
   }
 
   fetchData = async () => {
-    await fetch(
-      "https://maceo.sth.kth.se/api/category/pmp3g/version/2/geotype/point/lon/14.333/lat/60.383/"
-    )
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          approvedTime: data.approvedTime,
-          fetchedData: data.timeSeries.slice(0, 10)
+    let data = await this._retrieveData("weatherData");
+    console.log(data);
+    if (!data) {
+      await fetch(
+        "https://maceo.sth.kth.se/api/category/pmp3g/version/2/geotype/point/lon/14.333/lat/60.383/"
+      )
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            approvedTime: data.approvedTime,
+            fetchedData: data.timeSeries.slice(0, 10)
+          });
+          this._storeData("weatherData", data.timeSeries.slice(0, 10));
+        })
+        .catch(error => {
+          console.error(error);
         });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    }
+  };
+
+  _storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+      console.log("saved data");
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+  _retrieveData = async key => {
+    try {
+      return await AsyncStorage.getItem(key)
+        .then(data => JSON.parse(data))
+        .then(data => {
+          this.setState({
+            fetchedData: data
+          });
+          return true;
+        });
+    } catch (error) {
+      console.log("no data");
+      // Error retrieving data
+    }
   };
 
   printRefres = () => {
