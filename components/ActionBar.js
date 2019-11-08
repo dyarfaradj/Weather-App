@@ -37,13 +37,10 @@ export default class ActionBar extends Component {
 }
 const styles = StyleSheet.create({
   inputContainer: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
     width: "100%",
-    height: 100,
-    bottom: 0
+    height: 100
   }
 });

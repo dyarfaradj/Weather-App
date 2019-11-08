@@ -55,12 +55,7 @@ export default class FrontPage extends Component {
     return (
       <View style={styles.container}>
         <StatusBarBackground style={{ backgroundColor: "black" }} />
-        <KeyboardAvoidingView
-          style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-          behavior="padding"
-          enabled
-          keyboardVerticalOffset={100}
-        >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
           <ScrollView
             refreshControl={
               <RefreshControl
