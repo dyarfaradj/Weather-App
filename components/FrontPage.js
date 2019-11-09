@@ -5,17 +5,14 @@ import {
   View,
   ScrollView,
   RefreshControl,
-  Text,
-  AsyncStorage
+  Text
 } from "react-native";
 import WeatherList from "./WeatherList";
 import ActionBar from "./ActionBar";
-import StatusBarBackground from "./StatusBarBackground";
-import NavigationMenu from "./NavigationMenu";
 import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
-import { fetchData } from "../utils/APIHandler";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
+import Header from "./Header";
 
 export default class FrontPage extends Component {
   constructor() {
@@ -52,7 +49,7 @@ export default class FrontPage extends Component {
     return (
       <View style={styles.container}>
         {/* <StatusBarBackground style={{ backgroundColor: "black" }} /> */}
-        <NavigationMenu />
+        <Header />
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
           <ScrollView
             refreshControl={

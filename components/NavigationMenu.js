@@ -1,6 +1,15 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
-import { Header } from "react-native-elements";
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Dimensions
+} from "react-native";
+import { createAppContainer } from "react-navigation";
+import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
+import HomeScreen from "../screens/HomeScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 
 export default class NavigationMenu extends Component {
   constructor() {
@@ -8,20 +17,31 @@ export default class NavigationMenu extends Component {
   }
 
   render() {
-    return (
-      <Header
-        containerStyle={{
-          backgroundColor: "black",
-          justifyContent: "space-around"
-        }}
-        statusBarProps={{ barStyle: "light-content" }}
-        leftComponent={{ icon: "settings", color: "#fff" }}
-        centerComponent={{ text: "Weather", style: { color: "#fff" } }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
-    );
+    const AppNavigation = createAppContainer(AppDrawerNavigator);
+    return <AppNavigation />;
   }
 }
+
+const CustomDrawerComponent = props => (
+  <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ height: 150, backgroundColor: "white" }}>
+      {/* <Image source={require('')}/> */}
+      <ScrollView>
+        <DrawerItems {...props} />
+      </ScrollView>
+    </View>
+  </SafeAreaView>
+);
+
+const AppDrawerNavigator = createDrawerNavigator(
+  {
+    Home: HomeScreen,
+    Settings: SettingsScreen
+  },
+  {
+    contentComponent: CustomDrawerComponent
+  }
+);
 const styles = StyleSheet.create({
   container: {
     width: "100%"

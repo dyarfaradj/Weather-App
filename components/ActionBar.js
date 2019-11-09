@@ -15,7 +15,7 @@ export default class ActionBar extends Component {
   }
 
   onInputChange = (name, value) => {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value.replace(",", ".") });
   };
   getData() {
     let info = { lon: this.state.lon, lat: this.state.lat };

@@ -1,13 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import FrontPage from "./components/FrontPage";
+import NavigationMenu from "./components/NavigationMenu";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <FrontPage />
-    </View>
-  );
+  return <NavigationMenu />;
 }
 
 const styles = StyleSheet.create({
