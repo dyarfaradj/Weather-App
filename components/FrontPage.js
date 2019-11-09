@@ -14,35 +14,27 @@ import StatusBarBackground from "./StatusBarBackground";
 import NavigationMenu from "./NavigationMenu";
 import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 import { fetchData } from "../utils/APIHandler";
+import * as WeatherAppActions from "../actions/WeatherAppActions";
+import weatherAppStore from "../stores/WeatherAppStore";
 
 export default class FrontPage extends Component {
   constructor() {
     super();
     this.state = {
-      fetchedData: [],
+      fetchedData: weatherAppStore.getData(),
       refreshing: false,
-      approvedTime: ""
+      approvedTime: weatherAppStore.getLastTimeUpdated()
     };
   }
 
-  componentDidMount() {
-    this.fetchData();
+  componentWillMount() {
+    weatherAppStore.on("change", this.getData);
   }
 
-  fetchData = async () => {
-    let data = await _retrieveData("weatherData");
-    if (!data) {
-      let value = await fetchData();
-      data = value;
-      this.setState({
-        approvedTime: data.approvedTime,
-        fetchedData: data.timeSeries
-      });
-      _storeData("weatherData", data.timeSeries);
-    }
+  getData = () => {
     this.setState({
-      approvedTime: data.approvedTime,
-      fetchedData: data
+      fetchedData: weatherAppStore.getData(),
+      approvedTime: weatherAppStore.getLastTimeUpdated()
     });
   };
 
@@ -50,7 +42,7 @@ export default class FrontPage extends Component {
     this.setState({
       refreshing: true
     });
-    this.fetchData();
+    WeatherAppActions.reloadWeatherData();
     this.setState({
       refreshing: false
     });

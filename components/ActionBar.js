@@ -3,22 +3,23 @@ import { StyleSheet } from "react-native";
 import CustomButton from "./CustomButton";
 import CustomInputfield from "./CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";
+import * as WeatherAppActions from "../actions/WeatherAppActions";
 
 export default class ActionBar extends Component {
   constructor() {
     super();
     this.state = {
-      lot: "14.333",
+      lon: "14.333",
       lat: "60.383"
     };
   }
 
   onInputChange = (name, value) => {
-    console.log("name: ", name, " value: ", value);
     this.setState({ [name]: value });
   };
   getData() {
-    console.log(this.state.lot + "  lol : " + this.state.lat);
+    let info = { lon: this.state.lon, lat: this.state.lat };
+    WeatherAppActions.reloadWeatherData(info);
   }
 
   render() {
@@ -32,9 +33,9 @@ export default class ActionBar extends Component {
         <CustomInputfield
           label="Longitude"
           placeholder={"Enter..."}
-          onChangeText={text => this.onInputChange("lot", text)}
-          name="lot"
-          value={this.state.lot}
+          onChangeText={text => this.onInputChange("lon", text)}
+          name="lon"
+          value={this.state.lon}
           returnKeyType={"next"}
         ></CustomInputfield>
         <CustomInputfield
