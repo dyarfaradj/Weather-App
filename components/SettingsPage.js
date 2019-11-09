@@ -4,12 +4,23 @@ import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
+import {
+  SettingsDividerShort,
+  SettingsDividerLong,
+  SettingsEditText,
+  SettingsCategoryHeader,
+  SettingsSwitch,
+  SettingsPicker
+} from "react-native-settings-components";
 
 export default class SettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      settings: weatherAppStore.getSettings()
+      settings: weatherAppStore.getSettings(),
+      username: "",
+      allowPushNotifications: false,
+      gender: ""
     };
   }
   componentWillMount() {
