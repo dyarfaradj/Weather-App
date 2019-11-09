@@ -9,10 +9,7 @@ export default class SettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      settings: weatherAppStore.getSettings(),
-      username: "",
-      allowPushNotifications: false,
-      gender: ""
+      settings: weatherAppStore.getSettings()
     };
   }
   componentWillMount() {
