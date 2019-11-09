@@ -4,14 +4,6 @@ import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
-import {
-  SettingsDividerShort,
-  SettingsDividerLong,
-  SettingsEditText,
-  SettingsCategoryHeader,
-  SettingsSwitch,
-  SettingsPicker
-} from "react-native-settings-components";
 
 export default class SettingsPage extends Component {
   constructor(props) {

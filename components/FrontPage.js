@@ -28,6 +28,10 @@ export default class FrontPage extends Component {
     weatherAppStore.on("change", this.getData);
   }
 
+  componentWillUnmount() {
+    weatherAppStore.removeListener("change", this.getData);
+  }
+
   getData = () => {
     this.setState({
       fetchedData: weatherAppStore.getData(),
@@ -48,7 +52,6 @@ export default class FrontPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <StatusBarBackground style={{ backgroundColor: "black" }} /> */}
         <Header title="Home" navigation={this.props.navigation} />
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
           <ScrollView
