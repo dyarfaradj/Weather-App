@@ -10,6 +10,7 @@ import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import FavoritesScreen from "../screens/FavoritesScreen";
 
 export default class NavigationMenu extends Component {
   constructor() {
@@ -36,7 +37,8 @@ const CustomDrawerComponent = props => (
 const AppDrawerNavigator = createDrawerNavigator(
   {
     Home: HomeScreen,
-    Settings: SettingsScreen
+    Settings: SettingsScreen,
+    Favorites: FavoritesScreen
   },
   {
     contentComponent: CustomDrawerComponent

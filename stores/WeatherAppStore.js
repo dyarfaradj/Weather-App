@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { EventEmitter } from "events";
 import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
-import { fetchData } from "../utils/APIHandler";
-import { AsyncStorage } from "react-native";
 import dispatcher from "./dispatcher";
 
 class WeatherAppStore extends EventEmitter {
@@ -10,6 +8,15 @@ class WeatherAppStore extends EventEmitter {
     super();
     this.lastTimeUpdated = "";
     this.data = [];
+    this.settings = {
+      coordinates: true,
+      updateInterval: 10
+    };
+    this.favorites = [
+      { id: 1, text: "Gävle" },
+      { id: 2, text: "Stockholm" },
+      { id: 3, text: "Örebro" }
+    ];
     this.loadData();
     this.loadLastTimeUpdated();
   }
@@ -38,6 +45,12 @@ class WeatherAppStore extends EventEmitter {
     return this.lastTimeUpdated;
   }
 
+  getSettings() {
+    return this.settings;
+  }
+  getFavorites() {
+    return this.favorites;
+  }
   handleActions(action) {
     switch (action.type) {
       case "SAVE_DATA": {
