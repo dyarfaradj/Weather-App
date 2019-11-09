@@ -12,6 +12,9 @@ import WeatherList from "./WeatherList";
 import ActionBar from "./ActionBar";
 import StatusBarBackground from "./StatusBarBackground";
 import NavigationMenu from "./NavigationMenu";
+import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
+import { fetchData } from "../utils/APIHandler";
+
 export default class FrontPage extends Component {
   constructor() {
     super();
@@ -27,49 +30,20 @@ export default class FrontPage extends Component {
   }
 
   fetchData = async () => {
-    let data = await this._retrieveData("weatherData");
-    console.log(data);
+    let data = await _retrieveData("weatherData");
     if (!data) {
-      await fetch(
-        "https://maceo.sth.kth.se/api/category/pmp3g/version/2/geotype/point/lon/14.333/lat/60.383/"
-      )
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            approvedTime: data.approvedTime,
-            fetchedData: data.timeSeries.slice(0, 10)
-          });
-          this._storeData("weatherData", data.timeSeries.slice(0, 10));
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      let value = await fetchData();
+      data = value;
+      this.setState({
+        approvedTime: data.approvedTime,
+        fetchedData: data.timeSeries
+      });
+      _storeData("weatherData", data.timeSeries);
     }
-  };
-
-  _storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(value));
-      console.log("saved data");
-    } catch (error) {
-      // Error saving data
-    }
-  };
-
-  _retrieveData = async key => {
-    try {
-      return await AsyncStorage.getItem(key)
-        .then(data => JSON.parse(data))
-        .then(data => {
-          this.setState({
-            fetchedData: data
-          });
-          return true;
-        });
-    } catch (error) {
-      console.log("no data");
-      // Error retrieving data
-    }
+    this.setState({
+      approvedTime: data.approvedTime,
+      fetchedData: data
+    });
   };
 
   printRefres = () => {

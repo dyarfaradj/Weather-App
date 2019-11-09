@@ -1,4 +1,4 @@
-export const fetchData = async info => {
+const fetchData = async info => {
   if (!info) info = { long: "14.333", lat: "60.383" };
   return await fetch(
     "https://maceo.sth.kth.se/api/category/pmp3g/version/2/geotype/point/lon/" +
@@ -15,3 +15,5 @@ export const fetchData = async info => {
       console.error(error);
     });
 };
+
+export { fetchData };
