@@ -3,6 +3,6 @@ import FrontPage from "../components/FrontPage";
 
 export default class HomeScreen extends Component {
   render() {
-    return <FrontPage />;
+    return <FrontPage navigation={this.props.navigation} />;
   }
 }

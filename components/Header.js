@@ -6,11 +6,11 @@ import {
   ScrollView,
   Dimensions
 } from "react-native";
-import { Header } from "react-native-elements";
+import { Header, Icon } from "react-native-elements";
 
 export default class NavigationMenu extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   render() {
@@ -21,9 +21,16 @@ export default class NavigationMenu extends Component {
           justifyContent: "space-around"
         }}
         statusBarProps={{ barStyle: "light-content" }}
-        leftComponent={{ icon: "settings", color: "#fff" }}
-        centerComponent={{ text: "Weather", style: { color: "#fff" } }}
-        rightComponent={{ icon: "home", color: "#fff" }}
+        leftComponent={
+          <Icon
+            name="bars"
+            type="font-awesome"
+            color="#fff"
+            onPress={() => this.props.navigation.openDrawer()}
+          />
+        }
+        centerComponent={{ text: this.props.title, style: { color: "#fff" } }}
+        // rightComponent={{ icon: "home", color: "#fff" }}
       />
     );
   }

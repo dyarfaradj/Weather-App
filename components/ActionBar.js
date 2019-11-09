@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Keyboard } from "react-native";
 import CustomButton from "./CustomButton";
 import CustomInputfield from "./CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";
@@ -20,6 +20,7 @@ export default class ActionBar extends Component {
   getData() {
     let info = { lon: this.state.lon, lat: this.state.lat };
     WeatherAppActions.reloadWeatherData(info);
+    Keyboard.dismiss();
   }
 
   render() {

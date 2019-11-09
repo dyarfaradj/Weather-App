@@ -15,8 +15,8 @@ import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
 
 export default class FrontPage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fetchedData: weatherAppStore.getData(),
       refreshing: false,
@@ -49,7 +49,7 @@ export default class FrontPage extends Component {
     return (
       <View style={styles.container}>
         {/* <StatusBarBackground style={{ backgroundColor: "black" }} /> */}
-        <Header />
+        <Header title="Home" navigation={this.props.navigation} />
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
           <ScrollView
             refreshControl={

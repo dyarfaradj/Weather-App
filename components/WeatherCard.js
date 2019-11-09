@@ -35,9 +35,7 @@ export default WeathCard = props => {
       />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{props.data.validTime}</Text>
-        <Text style={styles.celcius}>
-          {pad2(props.data.parameters[1].values[0])}
-        </Text>
+        <Text style={styles.celcius}>{props.data.parameters[1].values[0]}</Text>
         <Text style={styles.wind}>
           Wind: {degToCompass(props.data.parameters[3].values[0])}{" "}
           {props.data.parameters[4].values[0]}m/s
