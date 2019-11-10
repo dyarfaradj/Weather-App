@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   RefreshControl,
-  Text
+  Text,
+  NetInfo
 } from "react-native";
 import WeatherList from "./WeatherList";
 import ActionBar from "./ActionBar";
@@ -13,6 +14,7 @@ import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
+import OfflineBar from "./OfflineBar";
 
 export default class FrontPage extends Component {
   constructor(props) {
@@ -20,6 +22,7 @@ export default class FrontPage extends Component {
     this.state = {
       fetchedData: weatherAppStore.getData(),
       refreshing: false,
+      hasConnection: true,
       approvedTime: weatherAppStore.getApprovedTime()
     };
   }
@@ -28,8 +31,19 @@ export default class FrontPage extends Component {
     weatherAppStore.on("change", this.getData);
   }
 
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      "connectionChange",
+      this.handleOfflineMode
+    );
+  }
+
   componentWillUnmount() {
     weatherAppStore.removeListener("change", this.getData);
+    NetInfo.isConnected.removeEventListener(
+      "connectionChange",
+      this.handleConnectivityChange
+    );
   }
 
   getData = () => {
@@ -37,6 +51,10 @@ export default class FrontPage extends Component {
       fetchedData: weatherAppStore.getData(),
       approvedTime: weatherAppStore.getApprovedTime()
     });
+  };
+
+  handleOfflineMode = hasConnection => {
+    this.setState({ hasConnection });
   };
 
   printRefres = () => {
@@ -62,6 +80,7 @@ export default class FrontPage extends Component {
               />
             }
           >
+            {!this.state.hasConnection && <OfflineBar />}
             <Text>Approved time: {this.state.approvedTime}</Text>
             <WeatherList list={this.state.fetchedData} />
           </ScrollView>

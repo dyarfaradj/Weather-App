@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Keyboard } from "react-native";
+import { StyleSheet, Keyboard, NetInfo, Alert } from "react-native";
 import CustomButton from "./CustomButton";
 import CustomInputfield from "./CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";
@@ -38,15 +38,25 @@ export default class ActionBar extends Component {
   };
 
   getData() {
-    let info = {
-      lon: this.state.settings.lon,
-      lat: this.state.settings.lat
-    };
-    let currentSettings = this.state.settings;
-    console.log(" settings: ", currentSettings);
-    WeatherAppActions.reloadWeatherData(info);
-    WeatherAppActions.saveSettings(currentSettings);
-    Keyboard.dismiss();
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (isConnected) {
+        let info = {
+          lon: this.state.settings.lon,
+          lat: this.state.settings.lat
+        };
+        let currentSettings = this.state.settings;
+        WeatherAppActions.reloadWeatherData(info);
+        WeatherAppActions.saveSettings(currentSettings);
+        Keyboard.dismiss();
+      } else {
+        Alert.alert(
+          "Internet Connection",
+          "Please check your connection",
+          [{ text: "OK" }],
+          { cancelable: false }
+        );
+      }
+    });
   }
 
   render() {
