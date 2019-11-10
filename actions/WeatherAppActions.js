@@ -1,10 +1,10 @@
 import dispatcher from "../stores/dispatcher";
 import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 
-export function saveData(data) {
+export function saveSettings(data) {
   dispatcher.dispatch({
-    type: "SAVE_DATA",
-    data
+    type: "SAVE_SETTINGS",
+    data: data
   });
 }
 
@@ -35,16 +35,14 @@ export function reloadWeatherData(info) {
   )
     .then(response => response.json())
     .then(data => {
+      data.coordinates = {
+        lon: info.lon,
+        lat: info.lat
+      };
       dispatcher.dispatch({
         type: "SAVE_DATA",
-        data: data.timeSeries
+        data: data
       });
-      dispatcher.dispatch({
-        type: "SAVE_LAST_TIME_UPDATED",
-        data: data.approvedTime
-      });
-      _storeData("weatherData", data.timeSeries);
-      _storeData("lastTimeUpdated", data.approvedTime);
       console.log("fetched data and store");
     })
     .catch(error => {

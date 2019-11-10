@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import { EventEmitter } from "events";
-import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
+import {
+  _retrieveData,
+  _storeData,
+  clearAllData
+} from "../utils/AsyncStorageHandler";
 import dispatcher from "./dispatcher";
 
 class WeatherAppStore extends EventEmitter {
   constructor() {
     super();
-    this.lastTimeUpdated = "";
+    this.approvedTime = "";
     this.data = [];
     this.settings = {
       coordinates: true,
+      lon: "",
+      lat: "",
+      location: "",
+      lastTimeFetched: "",
       updateInterval: 10
     };
     this.favorites = [
@@ -18,31 +26,55 @@ class WeatherAppStore extends EventEmitter {
       { id: 3, text: "Örebro" }
     ];
     this.loadData();
-    this.loadLastTimeUpdated();
+    this.loadApprovedTime();
+    this.loadSettings();
   }
 
   loadData = async () => {
     this.data = await _retrieveData("weatherData");
   };
 
-  loadLastTimeUpdated = async () => {
-    this.lastTimeUpdated = await _retrieveData("lastTimeUpdated");
+  loadApprovedTime = async () => {
+    this.approvedTime = await _retrieveData("approvedTime");
+  };
+
+  loadSettings = async () => {
+    this.settings = await _retrieveData("settings");
   };
 
   saveData(data) {
     this.data = data;
-    this.emit("change");
+    _storeData("weatherData", data);
   }
-  saveLastTimeUpdated(data) {
-    this.lastTimeUpdated = data;
-    this.emit("change");
+  saveApprovedTime(data) {
+    this.approvedTime = data;
+    _storeData("approvedTime", data);
   }
+
+  saveCoordinates(data) {
+    this.settings.lon = data.lon;
+    this.settings.lat = data.lat;
+    _storeData("settings", this.settings);
+  }
+
+  saveLastTimeFetched() {
+    this.settings.lastTimeFetched = new Date().toISOString();
+    console.log("XX; ", this.settings.lastTimeFetched);
+    console.log("YY; ", new Date(this.settings.lastTimeFetched));
+    _storeData("settings", this.settings);
+  }
+
+  saveSettings(data) {
+    this.settings = data;
+    _storeData("settings", this.settings);
+  }
+
   getData() {
     return this.data;
   }
 
-  getLastTimeUpdated() {
-    return this.lastTimeUpdated;
+  getApprovedTime() {
+    return this.approvedTime;
   }
 
   getSettings() {
@@ -54,15 +86,21 @@ class WeatherAppStore extends EventEmitter {
   handleActions(action) {
     switch (action.type) {
       case "SAVE_DATA": {
-        this.saveData(action.data);
+        this.saveData(action.data.timeSeries);
+        this.saveApprovedTime(action.data.approvedTime);
+        this.saveCoordinates(action.data.coordinates);
+        this.saveLastTimeFetched();
+        this.emit("change");
+        this.emit("changeSettings");
         break;
       }
-      case "SAVE_LAST_TIME_UPDATED": {
-        this.saveLastTimeUpdated(action.data);
+      case "SAVE_SETTINGS": {
+        this.data = action.data;
+        this.emit("changeSettings");
         break;
       }
       case "GET_DATA": {
-        this.data = action.data;
+        this.saveSettings(action.data);
         this.emit("change");
         break;
       }

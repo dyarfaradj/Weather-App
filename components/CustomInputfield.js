@@ -7,7 +7,7 @@ export default CustomInputfield = props => {
     <View style={styles.container}>
       <Input
         inputStyle={styles.textInput}
-        keyboardType="numeric"
+        keyboardType={props.keyboardType}
         maxLength={10}
         label={props.label}
         placeholder={props.placeholder}

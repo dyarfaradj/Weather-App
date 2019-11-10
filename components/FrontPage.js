@@ -20,7 +20,7 @@ export default class FrontPage extends Component {
     this.state = {
       fetchedData: weatherAppStore.getData(),
       refreshing: false,
-      approvedTime: weatherAppStore.getLastTimeUpdated()
+      approvedTime: weatherAppStore.getApprovedTime()
     };
   }
 
@@ -35,7 +35,7 @@ export default class FrontPage extends Component {
   getData = () => {
     this.setState({
       fetchedData: weatherAppStore.getData(),
-      approvedTime: weatherAppStore.getLastTimeUpdated()
+      approvedTime: weatherAppStore.getApprovedTime()
     });
   };
 

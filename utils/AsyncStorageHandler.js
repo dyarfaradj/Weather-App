@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native";
 const _storeData = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
-    console.log("saved data");
+    console.log("saved data: ", key);
   } catch (error) {
     // Error saving data
   }
@@ -13,4 +13,8 @@ const _retrieveData = async key => {
   return JSON.parse(data);
 };
 
-export { _storeData, _retrieveData };
+const clearAllData = () => {
+  AsyncStorage.clear();
+};
+
+export { _storeData, _retrieveData, clearAllData };

@@ -17,10 +17,15 @@ export default class SettingsPage extends Component {
   }
 
   getSettingsData = () => {
-    console.log(weatherAppStore.getSettings());
     this.setState({
       settings: weatherAppStore.getSettings()
     });
+  };
+
+  onSwitchChange = value => {
+    let currentSettings = this.state.settings;
+    currentSettings.coordinates = value;
+    WeatherAppActions.saveSettings(currentSettings);
   };
 
   render() {
@@ -29,7 +34,10 @@ export default class SettingsPage extends Component {
         {console.log(this.state.settings)}
         <Header title="Settings" navigation={this.props.navigation} />
         <Text>yoo</Text>
-        <Switch value={this.state.settings.coordinates}></Switch>
+        <Switch
+          onValueChange={this.onSwitchChange}
+          value={this.state.settings.coordinates}
+        ></Switch>
       </View>
     );
   }

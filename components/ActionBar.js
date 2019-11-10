@@ -4,21 +4,40 @@ import CustomButton from "./CustomButton";
 import CustomInputfield from "./CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
+import weatherAppStore from "../stores/WeatherAppStore";
 
 export default class ActionBar extends Component {
   constructor() {
     super();
     this.state = {
-      lon: "14.333",
-      lat: "60.383"
+      settings: weatherAppStore.getSettings()
     };
   }
 
-  onInputChange = (name, value) => {
-    this.setState({ [name]: value.replace(",", ".") });
+  componentWillMount() {
+    weatherAppStore.on("changeSettings", this.getSettingsData);
+  }
+
+  getSettingsData = () => {
+    this.setState({
+      settings: weatherAppStore.getSettings()
+    });
   };
+
+  onInputChange = (name, value) => {
+    this.setState(prevState => ({
+      settings: {
+        ...prevState.settings,
+        [name]: value.replace(",", ".")
+      }
+    }));
+  };
+
   getData() {
-    let info = { lon: this.state.lon, lat: this.state.lat };
+    let info = {
+      lon: this.state.settings.lon,
+      lat: this.state.settings.lat
+    };
     WeatherAppActions.reloadWeatherData(info);
     Keyboard.dismiss();
   }
@@ -31,22 +50,39 @@ export default class ActionBar extends Component {
         end={[0, 0]}
         style={styles.inputContainer}
       >
-        <CustomInputfield
-          label="Longitude"
-          placeholder={"Enter..."}
-          onChangeText={text => this.onInputChange("lon", text)}
-          name="lon"
-          value={this.state.lon}
-          returnKeyType={"next"}
-        ></CustomInputfield>
-        <CustomInputfield
-          label="Latitude"
-          placeholder="Enter..."
-          returnKeyType={"Search"}
-          onChangeText={text => this.onInputChange("lat", text)}
-          name="lat"
-          value={this.state.lat}
-        ></CustomInputfield>
+        {this.state.settings.coordinates ? (
+          <>
+            <CustomInputfield
+              label="Longitude"
+              placeholder={"Enter..."}
+              keyboardType="numeric"
+              onChangeText={text => this.onInputChange("lon", text)}
+              name="lon"
+              value={this.state.settings.lon}
+              returnKeyType={"next"}
+            ></CustomInputfield>
+            <CustomInputfield
+              label="Latitude"
+              placeholder="Enter..."
+              keyboardType="numeric"
+              returnKeyType={"Search"}
+              onChangeText={text => this.onInputChange("lat", text)}
+              name="lat"
+              value={this.state.settings.lat}
+            ></CustomInputfield>
+          </>
+        ) : (
+          <CustomInputfield
+            label="Location"
+            placeholder="Enter a location..."
+            keyboardType="default"
+            returnKeyType={"Search"}
+            onChangeText={text => this.onInputChange("location", text)}
+            name="location"
+            value={this.state.settings.location}
+          ></CustomInputfield>
+        )}
+
         <CustomButton
           onPress={() => this.getData()}
           title="Search"
