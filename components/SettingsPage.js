@@ -15,6 +15,9 @@ export default class SettingsPage extends Component {
   componentWillMount() {
     weatherAppStore.on("changeSettings", this.getSettingsData);
   }
+  componentWillUnmount() {
+    weatherAppStore.removeListener("changeSettings", this.getSettingsData);
+  }
 
   getSettingsData = () => {
     this.setState({

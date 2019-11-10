@@ -18,6 +18,10 @@ export default class ActionBar extends Component {
     weatherAppStore.on("changeSettings", this.getSettingsData);
   }
 
+  componentWillUnmount() {
+    weatherAppStore.removeListener("changeSettings", this.getSettingsData);
+  }
+
   getSettingsData = () => {
     this.setState({
       settings: weatherAppStore.getSettings()
@@ -38,7 +42,10 @@ export default class ActionBar extends Component {
       lon: this.state.settings.lon,
       lat: this.state.settings.lat
     };
+    let currentSettings = this.state.settings;
+    console.log(" settings: ", currentSettings);
     WeatherAppActions.reloadWeatherData(info);
+    WeatherAppActions.saveSettings(currentSettings);
     Keyboard.dismiss();
   }
 

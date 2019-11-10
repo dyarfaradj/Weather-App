@@ -59,13 +59,14 @@ class WeatherAppStore extends EventEmitter {
 
   saveLastTimeFetched() {
     this.settings.lastTimeFetched = new Date().toISOString();
-    console.log("XX; ", this.settings.lastTimeFetched);
-    console.log("YY; ", new Date(this.settings.lastTimeFetched));
+    // console.log("XX; ", this.settings.lastTimeFetched);
+    // console.log("YY; ", new Date(this.settings.lastTimeFetched));
     _storeData("settings", this.settings);
   }
 
   saveSettings(data) {
     this.settings = data;
+    console.log("save sett: ", data);
     _storeData("settings", this.settings);
   }
 
@@ -91,11 +92,10 @@ class WeatherAppStore extends EventEmitter {
         this.saveCoordinates(action.data.coordinates);
         this.saveLastTimeFetched();
         this.emit("change");
-        this.emit("changeSettings");
         break;
       }
       case "SAVE_SETTINGS": {
-        this.data = action.data;
+        this.saveSettings(action.data);
         this.emit("changeSettings");
         break;
       }
