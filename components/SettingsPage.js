@@ -34,9 +34,8 @@ export default class SettingsPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {console.log(this.state.settings)}
         <Header title="Settings" navigation={this.props.navigation} />
-        <Text>yoo</Text>
+        <Text>Use coordinates: </Text>
         <Switch
           onValueChange={this.onSwitchChange}
           value={this.state.settings.coordinates}
