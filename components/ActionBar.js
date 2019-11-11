@@ -107,7 +107,6 @@ export default class ActionBar extends Component {
     });
   }
   handleSelectItem(item, index) {
-    console.log(item.place, "lat: ", item.lat, " lon: ", item.lon);
     this.setState({
       settings: {
         lon: item.lon.toFixed(3),
@@ -162,10 +161,7 @@ export default class ActionBar extends Component {
                 containerStyle={styles.pickerStyle}
                 placeholder="Enter a location..."
                 spinnerColor="white"
-                // scrollToInput={ev => scrollToInput(ev)}
                 handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
-                // onDropdownClose={() => onDropdownClose()}
-                // onDropdownShow={() => onDropdownShow()}
                 onChangeText={text => this.onInputChangeAPI(text)}
                 renderIcon={() => (
                   <Ionicons

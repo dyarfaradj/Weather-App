@@ -40,7 +40,7 @@ class WeatherAppStore extends EventEmitter {
   };
 
   loadFavorites = async () => {
-    //this.favorites = await _retrieveData("favorites");
+    this.favorites = await _retrieveData("favorites");
   };
 
   saveData(data) {
@@ -60,29 +60,21 @@ class WeatherAppStore extends EventEmitter {
 
   saveLastTimeFetched() {
     this.settings.lastTimeFetched = new Date().toISOString();
-    // console.log("XX; ", this.settings.lastTimeFetched);
-    // console.log("YY; ", new Date(this.settings.lastTimeFetched));
     _storeData("settings", this.settings);
   }
 
   saveSettings(data) {
     this.settings = data;
-    console.log("save sett: ", data);
     _storeData("settings", this.settings);
   }
 
   saveFavorite(data) {
-    console.log("innan: ", this.favorites);
     var found = this.favorites.includes(data);
-    console.log("PLATS: ", data, " FOUND; ", found);
     if (found) {
       this.favorites.splice(this.favorites.indexOf(data), 1);
-      console.log("tar bort");
     } else {
       this.favorites.push(data);
-      console.log("lägger in");
     }
-    console.log("efter: ", this.favorites);
     _storeData("favorites", this.favorites);
   }
 
