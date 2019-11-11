@@ -20,14 +20,11 @@ class WeatherAppStore extends EventEmitter {
       lastTimeFetched: "",
       updateInterval: 10
     };
-    this.favorites = [
-      { id: 1, text: "Gävle" },
-      { id: 2, text: "Stockholm" },
-      { id: 3, text: "Örebro" }
-    ];
+    this.favorites = ["Gävle", "Örebro", "Kiruna", "Stockholm"];
     this.loadData();
     this.loadApprovedTime();
     this.loadSettings();
+    this.loadFavorites();
   }
 
   loadData = async () => {
@@ -40,6 +37,10 @@ class WeatherAppStore extends EventEmitter {
 
   loadSettings = async () => {
     this.settings = await _retrieveData("settings");
+  };
+
+  loadFavorites = async () => {
+    //this.favorites = await _retrieveData("favorites");
   };
 
   saveData(data) {
@@ -68,6 +69,21 @@ class WeatherAppStore extends EventEmitter {
     this.settings = data;
     console.log("save sett: ", data);
     _storeData("settings", this.settings);
+  }
+
+  saveFavorite(data) {
+    console.log("innan: ", this.favorites);
+    var found = this.favorites.includes(data);
+    console.log("PLATS: ", data, " FOUND; ", found);
+    if (found) {
+      this.favorites.splice(this.favorites.indexOf(data), 1);
+      console.log("tar bort");
+    } else {
+      this.favorites.push(data);
+      console.log("lägger in");
+    }
+    console.log("efter: ", this.favorites);
+    _storeData("favorites", this.favorites);
   }
 
   getData() {
@@ -99,14 +115,9 @@ class WeatherAppStore extends EventEmitter {
         this.emit("changeSettings");
         break;
       }
-      case "GET_DATA": {
-        this.saveSettings(action.data);
-        this.emit("change");
-        break;
-      }
-      case "GET_LAST_TIME_UPDATED": {
-        this.data = action.data;
-        this.emit("change");
+      case "SAVE_FAVORITE": {
+        this.saveFavorite(action.data);
+        this.emit("changeFavorites");
         break;
       }
     }

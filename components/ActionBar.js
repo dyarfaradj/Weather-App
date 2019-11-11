@@ -27,18 +27,26 @@ export default class ActionBar extends Component {
     this.state = {
       apiUrl: "g",
       settings: weatherAppStore.getSettings(),
-      error: ""
+      favorites: weatherAppStore.getFavorites(),
+      error: "",
+      currentSelectedPlace: ""
     };
   }
 
   componentWillMount() {
+    weatherAppStore.on("changeFavorites", this.getFavoritesData);
     weatherAppStore.on("changeSettings", this.getSettingsData);
   }
 
   componentWillUnmount() {
     weatherAppStore.removeListener("changeSettings", this.getSettingsData);
+    weatherAppStore.removeListener("changeFavorites", this.getFavoritesData);
   }
-
+  getFavoritesData = () => {
+    this.setState({
+      favorites: weatherAppStore.getFavorites()
+    });
+  };
   getSettingsData = () => {
     this.setState({
       settings: weatherAppStore.getSettings()
@@ -60,6 +68,16 @@ export default class ActionBar extends Component {
     });
   };
 
+  toggleFavorite = item => {
+    if (item) {
+      WeatherAppActions.saveFavorite(item);
+    }
+  };
+  updateItem = item => {
+    this.setState({
+      currentSelectedPlace: item.place
+    });
+  };
   getData() {
     NetInfo.isConnected.fetch().then(isConnected => {
       if (isConnected) {
@@ -89,7 +107,6 @@ export default class ActionBar extends Component {
     });
   }
   handleSelectItem(item, index) {
-    console.log(item);
     console.log(item.place, "lat: ", item.lat, " lon: ", item.lon);
     this.setState({
       settings: {
@@ -102,7 +119,6 @@ export default class ActionBar extends Component {
   }
 
   render() {
-    const { scrollToInput, onDropdownClose, onDropdownShow } = this.props;
     return (
       <LinearGradient
         colors={["#000000", "#000000", "#434343"]}
@@ -155,8 +171,16 @@ export default class ActionBar extends Component {
                   <Ionicons
                     name="ios-star"
                     size={40}
-                    color="#c7c6c1"
-                    onPress={() => console.log("HAHA")}
+                    color={
+                      this.state.favorites.includes(
+                        this.state.currentSelectedPlace
+                      )
+                        ? "#ffff00"
+                        : "#c7c6c1"
+                    }
+                    onPress={() =>
+                      this.toggleFavorite(this.state.currentSelectedPlace)
+                    }
                   />
                 )}
                 fetchDataUrl={
@@ -165,6 +189,7 @@ export default class ActionBar extends Component {
                 }
                 minimumCharactersCount={1}
                 highlightText
+                handleSelectItem={item => this.updateItem(item)}
                 valueExtractor={item => item.place}
                 rightTextExtractor={item =>
                   item.lat.toFixed(3) + ", " + item.lon.toFixed(3)

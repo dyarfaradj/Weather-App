@@ -60,7 +60,7 @@ export default class ListItem extends Component {
       this.refs["task"].setNativeProps({
         style: { transform: [{ translateX: Dimensions.get("window").width }] }
       });
-      this.props.handleDeleteTask(this.props.item.id);
+      this.props.handleDeleteTask(this.props.item);
     }
   };
 
@@ -76,10 +76,7 @@ export default class ListItem extends Component {
           style={styles.item}
           {...this.panResponder.panHandlers}
         >
-          <Text style={[styles.text, { flex: 1 }]}>
-            {" "}
-            {this.props.item.text}
-          </Text>
+          <Text style={[styles.text, { flex: 1 }]}> {this.props.item}</Text>
           <TouchableOpacity>
             <View style={styles.menu}></View>
             <View style={styles.menu}></View>

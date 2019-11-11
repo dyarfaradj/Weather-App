@@ -8,17 +8,10 @@ export function saveSettings(data) {
   });
 }
 
-export function getData() {
+export function saveFavorite(data) {
   dispatcher.dispatch({
-    type: "GET_DATA",
-    data
-  });
-}
-
-export function getLastTimeUpdated() {
-  dispatcher.dispatch({
-    type: "GET_LAST_TIME_UPDATED",
-    data
+    type: "SAVE_FAVORITE",
+    data: data
   });
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, FlatList, Text, Switch } from "react-native";
+import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
 import ListItem from "./ListItem";
@@ -15,17 +16,20 @@ export default class FavoritesPage extends Component {
     weatherAppStore.on("changeFavorites", this.getFavoritesData);
   }
 
+  componentWillUnmount() {
+    weatherAppStore.removeListener("changeFavorites", this.getFavoritesData);
+  }
+
   getFavoritesData = () => {
     this.setState({
       favorites: weatherAppStore.getFavorites()
     });
   };
-  handleDeleteTask = id => {
-    console.log(id);
-    const newFavorites = this.state.favorites.filter(item => id !== item.id);
-    this.setState({
-      favorites: newFavorites
-    });
+
+  handleDeleteTask = item => {
+    if (item) {
+      WeatherAppActions.saveFavorite(item);
+    }
   };
 
   render() {
@@ -34,7 +38,7 @@ export default class FavoritesPage extends Component {
         <Header title="Favorites" navigation={this.props.navigation} />
         <FlatList
           data={this.state.favorites}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => this.state.favorites.indexOf(item).toString()}
           ItemSeparatorComponent={() => (
             <View style={styles.itemSeperator}></View>
           )}
