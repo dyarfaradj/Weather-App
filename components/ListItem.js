@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  FlatList,
   Text,
-  Switch,
   TouchableOpacity,
   Animated,
   PanResponder,

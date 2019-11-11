@@ -25,12 +25,18 @@ function degToCompass(num) {
     "NNW"
   ];
   return arr[val % 16];
+  function getImage(id) {
+    return "../assets/images/" + props.data.parameters[18].values[0] + ".png";
+  }
 }
 export default WeathCard = props => {
   return (
     <View style={styles.container}>
+      {console.log(props.data.parameters[18].values[0])}
       <Image
-        source={require("../assets/images/PartCloudRainThunderDay.png")}
+        source={require("../assets/images/" +
+          props.data.parameters[18].values[0] +
+          ".png")}
         style={{ width: 50, height: 50 }}
       />
       <View style={styles.contentContainer}>
