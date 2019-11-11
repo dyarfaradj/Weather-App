@@ -73,29 +73,25 @@ export default class ActionBar extends Component {
       WeatherAppActions.saveFavorite(item);
     }
   };
-  updateItem = item => {
-    this.setState({
-      currentSelectedPlace: item.place
-    });
-  };
   getData() {
     NetInfo.isConnected.fetch().then(isConnected => {
       if (isConnected) {
+        this.setState({ error1: "", error2: "" });
         let info = {
           lon: this.state.settings.lon,
           lat: this.state.settings.lat
         };
-        let currentSettings = this.state.settings;
-        let test = WeatherAppActions.reloadWeatherData(info);
-        console.log("HAHAH: ", test);
-        if (!test) {
-          this.setState({ error: "Fel" });
-        } else {
-          this.setState({ error: "" });
-          WeatherAppActions.saveSettings(currentSettings);
+        if (this.state.settings.lon === "") {
+          this.setState({ error1: "Fel" });
         }
-
-        Keyboard.dismiss();
+        if (this.state.settings.lat === "") {
+          this.setState({ error2: "Fel" });
+        }
+        if (this.state.settings.lat != "" && this.state.settings.lon != "") {
+          let currentSettings = this.state.settings;
+          WeatherAppActions.reloadWeatherData(info, currentSettings);
+          Keyboard.dismiss();
+        }
       } else {
         Alert.alert(
           "Internet Connection",
@@ -112,7 +108,8 @@ export default class ActionBar extends Component {
         lon: item.lon.toFixed(3),
         lat: item.lat.toFixed(3),
         location: item.place
-      }
+      },
+      currentSelectedPlace: item.place
     });
     this.getData();
   }
@@ -134,7 +131,7 @@ export default class ActionBar extends Component {
               onChangeText={text => this.onInputChange("lon", text)}
               name="lon"
               value={this.state.settings.lon}
-              errorMessage={this.state.error}
+              errorMessage={this.state.error1}
               returnKeyType={"next"}
             ></CustomInputfield>
             <CustomInputfield
@@ -145,7 +142,7 @@ export default class ActionBar extends Component {
               onChangeText={text => this.onInputChange("lat", text)}
               name="lat"
               value={this.state.settings.lat}
-              errorMessage={this.state.error}
+              errorMessage={this.state.error2}
             ></CustomInputfield>
             <CustomButton
               onPress={() => this.getData()}
@@ -185,7 +182,6 @@ export default class ActionBar extends Component {
                 }
                 minimumCharactersCount={1}
                 highlightText
-                handleSelectItem={item => this.updateItem(item)}
                 valueExtractor={item => item.place}
                 rightTextExtractor={item =>
                   item.lat.toFixed(3) + ", " + item.lon.toFixed(3)

@@ -11,18 +11,19 @@ class WeatherAppStore extends EventEmitter {
   constructor() {
     super();
     this.approvedTime = "";
+    this.lastTimeFetched = "";
     this.data = [];
     this.settings = {
       coordinates: true,
       lon: "",
       lat: "",
       location: "",
-      lastTimeFetched: "",
       updateInterval: 10
     };
     this.favorites = ["Gävle", "Örebro", "Kiruna", "Stockholm"];
     this.loadData();
     this.loadApprovedTime();
+    this.loadLastTimeFetched();
     this.loadSettings();
     this.loadFavorites();
   }
@@ -33,6 +34,10 @@ class WeatherAppStore extends EventEmitter {
 
   loadApprovedTime = async () => {
     this.approvedTime = await _retrieveData("approvedTime");
+  };
+
+  loadLastTimeFetched = async () => {
+    this.lastTimeFetched = await _retrieveData("lastTimeFetched");
   };
 
   loadSettings = async () => {
@@ -47,20 +52,21 @@ class WeatherAppStore extends EventEmitter {
     this.data = data;
     _storeData("weatherData", data);
   }
+
   saveApprovedTime(data) {
     this.approvedTime = data;
     _storeData("approvedTime", data);
   }
 
-  saveCoordinates(data) {
-    this.settings.lon = data.lon;
-    this.settings.lat = data.lat;
-    _storeData("settings", this.settings);
-  }
+  // saveCoordinates(data) {
+  //   this.settings.lon = data.lon;
+  //   this.settings.lat = data.lat;
+  //   _storeData("settings", this.settings);
+  // }
 
   saveLastTimeFetched() {
-    this.settings.lastTimeFetched = new Date().toISOString();
-    _storeData("settings", this.settings);
+    this.lastTimeFetched = new Date().toISOString();
+    _storeData("lastTimeFetched", this.lastTimeFetched);
   }
 
   saveSettings(data) {
@@ -86,20 +92,29 @@ class WeatherAppStore extends EventEmitter {
     return this.approvedTime;
   }
 
+  getLastTimeFetched() {
+    return this.lastTimeFetched;
+  }
+
   getSettings() {
     return this.settings;
   }
+
   getFavorites() {
     return this.favorites;
   }
+
   handleActions(action) {
     switch (action.type) {
       case "SAVE_DATA": {
         this.saveData(action.data.timeSeries);
         this.saveApprovedTime(action.data.approvedTime);
-        this.saveCoordinates(action.data.coordinates);
-        this.saveLastTimeFetched();
         this.emit("change");
+        break;
+      }
+      case "SAVE_LAST_TIME_FETCHED": {
+        this.saveLastTimeFetched();
+        this.emit("changeLastTimeFetched");
         break;
       }
       case "SAVE_SETTINGS": {
