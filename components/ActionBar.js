@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { StyleSheet, Keyboard, NetInfo, Alert, View } from "react-native";
+import {
+  StyleSheet,
+  Keyboard,
+  NetInfo,
+  Alert,
+  View,
+  SafeAreaView
+} from "react-native";
+import { Icon } from "react-native-elements";
 import CustomButton from "./CustomButton";
 import CustomInputfield from "./CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,11 +19,13 @@ import {
   Dropdown,
   DropdownItem
 } from "react-native-dropdown-autocomplete";
+import { Ionicons } from "@expo/vector-icons";
 
 export default class ActionBar extends Component {
   constructor() {
     super();
     this.state = {
+      apiUrl: "g",
       settings: weatherAppStore.getSettings(),
       error: ""
     };
@@ -42,6 +52,12 @@ export default class ActionBar extends Component {
         [name]: value.replace(",", ".")
       }
     }));
+  };
+
+  onInputChangeAPI = value => {
+    this.setState({
+      apiUrl: value
+    });
   };
 
   getData() {
@@ -86,8 +102,6 @@ export default class ActionBar extends Component {
   }
 
   render() {
-    const autocompletes = [...Array(10).keys()];
-    const apiUrl = "http://smhi.se/wpt-a/backend_solr/autocomplete/search/g";
     const { scrollToInput, onDropdownClose, onDropdownShow } = this.props;
     return (
       <LinearGradient
@@ -124,37 +138,40 @@ export default class ActionBar extends Component {
             ></CustomButton>
           </>
         ) : (
-          <>
-            {/* <CustomInputfield
-              label="Location"
-              placeholder="Enter a location..."
-              keyboardType="default"
-              returnKeyType={"Search"}
-              onChangeText={text => this.onInputChange("location", text)}
-              name="location"
-              value={this.state.settings.location}
-            ></CustomInputfield> */}
-            <View style={styles.autocompletesContainer}>
+          <View style={styles.autocompletesContainer}>
+            <SafeAreaView>
               <Autocomplete
                 inputStyle={styles.input}
                 inputContainerStyle={styles.inputContainer2}
+                containerStyle={styles.pickerStyle}
                 placeholder="Enter a location..."
                 spinnerColor="white"
                 // scrollToInput={ev => scrollToInput(ev)}
                 handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
                 // onDropdownClose={() => onDropdownClose()}
                 // onDropdownShow={() => onDropdownShow()}
-                fetchDataUrl={apiUrl}
+                onChangeText={text => this.onInputChangeAPI(text)}
+                renderIcon={() => (
+                  <Ionicons
+                    name="ios-star"
+                    size={40}
+                    color="#c7c6c1"
+                    onPress={() => console.log("HAHA")}
+                  />
+                )}
+                fetchDataUrl={
+                  "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
+                  this.state.apiUrl
+                }
                 minimumCharactersCount={1}
                 highlightText
                 valueExtractor={item => item.place}
-                rightContent
                 rightTextExtractor={item =>
                   item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
                 }
               />
-            </View>
-          </>
+            </SafeAreaView>
+          </View>
         )}
       </LinearGradient>
     );
@@ -166,7 +183,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: 100
+    height: "auto",
+    minHeight: 100,
+    maxHeight: 300
   },
   autocompletesContainer: {
     paddingTop: 0,
@@ -195,10 +214,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff"
-  },
-  plus: {
-    position: "absolute",
-    left: 15,
-    top: 10
   }
 });
