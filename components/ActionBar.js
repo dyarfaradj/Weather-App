@@ -123,7 +123,6 @@ export default class ActionBar extends Component {
         end={[0, 0]}
         style={styles.inputContainer}
       >
-        {console.log(this.state.settings)}
         {this.state.settings.coordinates ? (
           <>
             <CustomInputfield

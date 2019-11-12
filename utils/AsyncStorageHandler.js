@@ -3,9 +3,7 @@ const _storeData = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
     console.log("saved data: ", key);
-  } catch (error) {
-    // Error saving data
-  }
+  } catch (error) {}
 };
 
 const _retrieveData = async key => {

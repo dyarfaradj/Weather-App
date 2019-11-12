@@ -28,12 +28,27 @@ function degToCompass(num) {
   ];
   return arr[val % 16];
 }
+
+function valueToOkta(num) {
+  var arr = [
+    "Sky clear",
+    "Few",
+    "Few",
+    "Scattered",
+    "Broken",
+    "Broken",
+    "Broken",
+    "Overcast",
+    "Sky obstructed"
+  ];
+  return arr[num];
+}
 export default WeathCard = props => {
   return (
     <View style={styles.container}>
       <Image
         source={weatherIcon[props.data.parameters[18].values[0]]}
-        style={{ width: 90, height: 70 }}
+        style={{ width: 85, height: 70 }}
       />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>
@@ -74,6 +89,9 @@ export default WeathCard = props => {
         <Text style={styles.wind}>
           Air pressure: {props.data.parameters[0].values[0]}hPa
         </Text>
+        <Text style={styles.wind}>
+          Cloud cover: {valueToOkta(props.data.parameters[7].values[0])}
+        </Text>
       </View>
     </View>
   );
@@ -96,7 +114,7 @@ const styles = StyleSheet.create({
   },
   celcius: {
     color: "black",
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: "bold"
   },
   wind: {
