@@ -15,6 +15,7 @@ import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
 import OfflineBar from "./OfflineBar";
+import moment from "moment";
 
 export default class FrontPage extends Component {
   constructor(props) {
@@ -81,7 +82,10 @@ export default class FrontPage extends Component {
             }
           >
             {!this.state.hasConnection && <OfflineBar />}
-            <Text>Approved time: {this.state.approvedTime}</Text>
+            <Text>
+              Approved time:{" "}
+              {moment(this.state.approvedTime).format("YYYY-MM-DD HH:MM")}
+            </Text>
             <WeatherList list={this.state.fetchedData} />
           </ScrollView>
           <ActionBar />

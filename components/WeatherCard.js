@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { ListItem } from "react-native-elements";
 import { weatherIcon } from "../utils/ImageHandler";
-
+import moment from "moment";
 function pad2(number) {
   return (number < 10 ? "0" : "") + number;
 }
@@ -36,7 +36,9 @@ export default WeathCard = props => {
         style={{ width: 70, height: 70 }}
       />
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>{props.data.validTime}</Text>
+        <Text style={styles.title}>
+          {moment(props.data.validTime).format("YYYY-MM-DD HH:MM")}
+        </Text>
         <Text style={styles.celcius}>
           {props.data.parameters[1].values[0]}°C
         </Text>
@@ -49,13 +51,15 @@ export default WeathCard = props => {
       </View>
       <Image
         style={{
-          width: 25,
-          height: 55,
+          width: 15,
+          height: 25,
+          marginLeft: 5,
+          marginRight: 5,
           transform: [
             { rotate: 180 + props.data.parameters[3].values[0] + "deg" }
           ]
         }}
-        resizeMode="stretch"
+        resizeMode="contain"
         source={require("../assets/images/arrow.png")}
       />
       <View style={styles.contentContainer}>
@@ -66,6 +70,9 @@ export default WeathCard = props => {
         <Text style={styles.precipitation}>
           Min: {props.data.parameters[12].values[0]} Max:{" "}
           {props.data.parameters[13].values[0]}
+        </Text>
+        <Text style={styles.wind}>
+          Air pressure: {props.data.parameters[0].values[0]}hPa
         </Text>
       </View>
     </View>
