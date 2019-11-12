@@ -159,6 +159,7 @@ export default class ActionBar extends Component {
           <View style={styles.autocompletesContainer}>
             <SafeAreaView>
               <Autocomplete
+                key={this.state.currentSelectedPlace}
                 inputValue={this.state.currentSelectedPlace}
                 inputStyle={styles.input}
                 inputContainerStyle={styles.inputContainer2}
