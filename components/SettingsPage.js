@@ -64,7 +64,7 @@ export default class SettingsPage extends Component {
               thumbTintColor="#grey"
             />
             <Text style={styles.sliderText}>
-              {this.state.settings.updateInterval}minutes
+              {this.state.settings.updateInterval} minutes
             </Text>
           </View>
         </View>
