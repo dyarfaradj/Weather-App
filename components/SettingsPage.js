@@ -1,15 +1,25 @@
 import React, { Component } from "react";
-import { StyleSheet, View, FlatList, Text, Switch } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Text,
+  Switch,
+  TextInput,
+  Slider
+} from "react-native";
 import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
+import CustomInputfield from "./CustomInputfield";
 
 export default class SettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      settings: weatherAppStore.getSettings()
+      settings: weatherAppStore.getSettings(),
+      error1: ""
     };
   }
   componentWillMount() {
@@ -31,33 +41,84 @@ export default class SettingsPage extends Component {
     WeatherAppActions.saveSettings(currentSettings);
   };
 
+  onSliderChange = value => {
+    let currentSettings = this.state.settings;
+    currentSettings.updateInterval = value;
+    WeatherAppActions.saveSettings(currentSettings);
+  };
+
+  onInputChange = (name, value) => {
+    this.setState(prevState => ({
+      settings: {
+        ...prevState.settings,
+        [name]: value.replace(",", ".")
+      }
+    }));
+  };
+
   render() {
     return (
       <View style={styles.container}>
+        {console.log(this.state.settings)}
         <Header title="Settings" navigation={this.props.navigation} />
-        <Text>Use coordinates: </Text>
-        <Switch
-          onValueChange={this.onSwitchChange}
-          value={this.state.settings.coordinates}
-        ></Switch>
+        <View style={styles.settingsContainer}>
+          <Text style={styles.settingsLabel}>Use coordinates: </Text>
+          <Switch
+            style={styles.settingsComponent}
+            onValueChange={this.onSwitchChange}
+            value={this.state.settings.coordinates}
+          ></Switch>
+        </View>
+        <View style={styles.settingsContainer}>
+          <Text style={styles.settingsLabel}>Update Time interval: </Text>
+          <View style={styles.sliderContainer}>
+            <Slider
+              style={(styles.settingsComponent, { width: 200, height: 10 })}
+              value={parseInt(this.state.settings.updateInterval)}
+              onSlidingComplete={this.onSliderChange}
+              step={1}
+              maximumValue={10}
+              minimumValue={1}
+              minimumTrackTintColor="#00BFFF"
+              thumbTintColor="#grey"
+            />
+            <Text style={styles.sliderText}>
+              {this.state.settings.updateInterval}minutes
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: "100%"
+    flex: 1
   },
-  inputContainer: {
-    flex: 1,
+  settingsLabel: {
+    marginLeft: 10
+  },
+  settingsComponent: {
+    marginRight: 10,
+    color: "white"
+  },
+  settingsContainer: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    backgroundColor: "#000000",
+    justifyContent: "space-between",
     width: "100%",
-    height: 100,
-    bottom: 0
+    height: 45,
+    marginTop: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "black"
+  },
+  sliderText: {
+    fontSize: 12,
+    color: "black",
+    textAlign: "center",
+    marginTop: 15
+  },
+  sliderContainer: {
+    top: 5,
+    flexDirection: "column"
   }
 });

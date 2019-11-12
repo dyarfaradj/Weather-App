@@ -122,9 +122,11 @@ export default class ActionBar extends Component {
         end={[0, 0]}
         style={styles.inputContainer}
       >
+        {console.log(this.state.settings)}
         {this.state.settings.coordinates ? (
           <>
             <CustomInputfield
+              color="#ffffff"
               label="Longitude"
               placeholder={"Enter..."}
               keyboardType="numeric"
@@ -135,6 +137,7 @@ export default class ActionBar extends Component {
               returnKeyType={"next"}
             ></CustomInputfield>
             <CustomInputfield
+              color="#ffffff"
               label="Latitude"
               placeholder="Enter..."
               keyboardType="numeric"

@@ -6,7 +6,7 @@ export default CustomInputfield = props => {
   return (
     <View style={styles.container}>
       <Input
-        inputStyle={styles.textInput}
+        inputStyle={(styles.textInput, { color: props.color })}
         keyboardType={props.keyboardType}
         maxLength={10}
         label={props.label}
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     lineHeight: 22,
-    fontSize: 17,
-    color: "#ffffff"
+    fontSize: 17
   }
 });
