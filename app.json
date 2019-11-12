@@ -2,7 +2,7 @@
   "expo": {
     "name": "Weather App ",
     "slug": "Weather",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "35.0.0",
     "ios": {
       "supportsTablet": true,
@@ -27,5 +27,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "description": ""
   }
 }
