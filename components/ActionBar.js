@@ -157,15 +157,18 @@ export default class ActionBar extends Component {
           <View style={styles.autocompletesContainer}>
             <SafeAreaView>
               <Autocomplete
+                initialValue={this.state.settings.location}
                 inputStyle={styles.input}
                 inputContainerStyle={styles.inputContainer2}
                 containerStyle={styles.pickerStyle}
+                spinnerStyle={styles.spinnerStyle}
                 placeholder="Enter a location..."
                 spinnerColor="white"
                 handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
                 onChangeText={text => this.onInputChangeAPI(text)}
                 renderIcon={() => (
                   <Ionicons
+                    style={styles.starIcon}
                     name="ios-star"
                     size={40}
                     color={
@@ -235,5 +238,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff"
+  },
+  spinnerStyle: {
+    marginTop: 15,
+    marginRight: 16
+  },
+  starIcon: {
+    paddingRight: 6
   }
 });
