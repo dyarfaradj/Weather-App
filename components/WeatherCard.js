@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { ListItem, Image } from "react-native-elements";
+import { StyleSheet, View, Text, Image } from "react-native";
+import { ListItem } from "react-native-elements";
 import { weatherIcon } from "../utils/ImageHandler";
 
 function pad2(number) {
@@ -40,6 +40,25 @@ export default WeathCard = props => {
         <Text style={styles.celcius}>
           {props.data.parameters[1].values[0]}°C
         </Text>
+        <Text style={styles.wind}>
+          Sight: {props.data.parameters[2].values[0]}km
+        </Text>
+        <Text style={styles.precipitation}>
+          Humidity: {props.data.parameters[5].values[0]}%
+        </Text>
+      </View>
+      <Image
+        style={{
+          width: 25,
+          height: 55,
+          transform: [
+            { rotate: 180 + props.data.parameters[3].values[0] + "deg" }
+          ]
+        }}
+        resizeMode="stretch"
+        source={require("../assets/images/arrow.png")}
+      />
+      <View style={styles.contentContainer}>
         <Text style={styles.wind}>
           Wind: {degToCompass(props.data.parameters[3].values[0])}{" "}
           {props.data.parameters[4].values[0]}m/s
