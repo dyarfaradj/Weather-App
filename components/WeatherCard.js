@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem, Image } from "react-native-elements";
+import { weatherIcon } from "../utils/ImageHandler";
+
 function pad2(number) {
   return (number < 10 ? "0" : "") + number;
 }
@@ -25,19 +27,13 @@ function degToCompass(num) {
     "NNW"
   ];
   return arr[val % 16];
-  function getImage(id) {
-    return "../assets/images/" + props.data.parameters[18].values[0] + ".png";
-  }
 }
 export default WeathCard = props => {
   return (
     <View style={styles.container}>
-      {console.log(props.data.parameters[18].values[0])}
       <Image
-        source={require("../assets/images/" +
-          props.data.parameters[18].values[0] +
-          ".png")}
-        style={{ width: 50, height: 50 }}
+        source={weatherIcon[props.data.parameters[18].values[0]]}
+        style={{ width: 70, height: 70 }}
       />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{props.data.validTime}</Text>
@@ -56,6 +52,7 @@ export default WeathCard = props => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -63,9 +60,7 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: "white",
     borderTopWidth: 1,
-    // borderBottomWidth: 1,
     borderTopColor: "black"
-    // borderBottomColor: "black"
   },
   contentContainer: {
     flexDirection: "column"
