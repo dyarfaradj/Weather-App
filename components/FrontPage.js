@@ -82,7 +82,7 @@ export default class FrontPage extends Component {
             }
           >
             {!this.state.hasConnection && <OfflineBar />}
-            <Text>
+            <Text style={{ textAlign: "center", margin: 5 }}>
               Approved time:{" "}
               {moment(this.state.approvedTime).format("YYYY-MM-DD HH:MM")}
             </Text>
