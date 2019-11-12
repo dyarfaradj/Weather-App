@@ -50,6 +50,25 @@ export default class ActionBar extends Component {
   };
   getSettingsData = () => {
     const currentSettings = weatherAppStore.getSettings();
+    if (currentSettings.location != this.state.currentSelectedPlace) {
+      fetch(
+        "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
+          currentSettings.location
+      )
+        .then(data => data.json())
+        .then(data => {
+          this.setState(prevState => ({
+            settings: {
+              ...prevState.settings,
+              lon: data[0].lon.toFixed(3),
+              lat: data[0].lat.toFixed(3)
+            }
+          }));
+        })
+        .then(() => {
+          this.getData();
+        });
+    }
     this.setState({
       settings: currentSettings,
       currentSelectedPlace: currentSettings.location
@@ -76,6 +95,7 @@ export default class ActionBar extends Component {
       WeatherAppActions.saveFavorite(item);
     }
   };
+
   getData() {
     NetInfo.isConnected.fetch().then(isConnected => {
       if (isConnected) {
@@ -84,16 +104,21 @@ export default class ActionBar extends Component {
           lon: this.state.settings.lon,
           lat: this.state.settings.lat
         };
-        if (this.state.settings.lon === "") {
-          this.setState({ error1: "Fel" });
-        }
-        if (this.state.settings.lat === "") {
-          this.setState({ error2: "Fel" });
-        }
-        if (this.state.settings.lat != "" && this.state.settings.lon != "") {
-          let currentSettings = this.state.settings;
+        let currentSettings = this.state.settings;
+        if (!currentSettings.coordinates) {
           WeatherAppActions.reloadWeatherData(info, currentSettings);
           Keyboard.dismiss();
+        } else {
+          if (this.state.settings.lon === "") {
+            this.setState({ error1: "Fel" });
+          }
+          if (this.state.settings.lat === "") {
+            this.setState({ error2: "Fel" });
+          }
+          if (this.state.settings.lat != "" && this.state.settings.lon != "") {
+            WeatherAppActions.reloadWeatherData(info, currentSettings);
+            Keyboard.dismiss();
+          }
         }
       } else {
         Alert.alert(
@@ -160,7 +185,6 @@ export default class ActionBar extends Component {
             <SafeAreaView>
               <Autocomplete
                 key={this.state.currentSelectedPlace}
-                inputValue={this.state.currentSelectedPlace}
                 inputStyle={styles.input}
                 inputContainerStyle={styles.inputContainer2}
                 containerStyle={styles.pickerStyle}
