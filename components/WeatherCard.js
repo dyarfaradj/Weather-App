@@ -33,7 +33,7 @@ export default WeathCard = props => {
     <View style={styles.container}>
       <Image
         source={weatherIcon[props.data.parameters[18].values[0]]}
-        style={{ width: 70, height: 70 }}
+        style={{ width: 90, height: 70 }}
       />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>
