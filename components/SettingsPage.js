@@ -1,18 +1,9 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Text,
-  Switch,
-  TextInput,
-  Slider
-} from "react-native";
+import { StyleSheet, View, Text, Switch, Slider } from "react-native";
 import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";
-import CustomInputfield from "./CustomInputfield";
 
 export default class SettingsPage extends Component {
   constructor(props) {
@@ -43,23 +34,13 @@ export default class SettingsPage extends Component {
 
   onSliderChange = value => {
     let currentSettings = this.state.settings;
-    currentSettings.updateInterval = value;
+    currentSettings.updateInterval = value.toString();
     WeatherAppActions.saveSettings(currentSettings);
-  };
-
-  onInputChange = (name, value) => {
-    this.setState(prevState => ({
-      settings: {
-        ...prevState.settings,
-        [name]: value.replace(",", ".")
-      }
-    }));
   };
 
   render() {
     return (
       <View style={styles.container}>
-        {console.log(this.state.settings)}
         <Header title="Settings" navigation={this.props.navigation} />
         <View style={styles.settingsContainer}>
           <Text style={styles.settingsLabel}>Use coordinates: </Text>
@@ -74,7 +55,7 @@ export default class SettingsPage extends Component {
           <View style={styles.sliderContainer}>
             <Slider
               style={(styles.settingsComponent, { width: 200, height: 10 })}
-              value={parseInt(this.state.settings.updateInterval)}
+              value={this.state.settings.updateInterval}
               onSlidingComplete={this.onSliderChange}
               step={1}
               maximumValue={10}

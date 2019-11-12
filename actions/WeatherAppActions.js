@@ -45,6 +45,7 @@ export function reloadWeatherData(info, currentSettings) {
         data: data
       });
       if (currentSettings) {
+        console.log("ACION: ", currentSettings);
         dispatcher.dispatch({
           type: "SAVE_SETTINGS",
           data: currentSettings

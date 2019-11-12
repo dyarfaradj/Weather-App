@@ -18,7 +18,7 @@ class WeatherAppStore extends EventEmitter {
       lon: "",
       lat: "",
       location: "",
-      updateInterval: 10
+      updateInterval: "10"
     };
     this.favorites = ["Gävle", "Örebro", "Kiruna", "Stockholm"];
     this.loadData();
@@ -57,12 +57,6 @@ class WeatherAppStore extends EventEmitter {
     this.approvedTime = data;
     _storeData("approvedTime", data);
   }
-
-  // saveCoordinates(data) {
-  //   this.settings.lon = data.lon;
-  //   this.settings.lat = data.lat;
-  //   _storeData("settings", this.settings);
-  // }
 
   saveLastTimeFetched() {
     this.lastTimeFetched = new Date().toISOString();

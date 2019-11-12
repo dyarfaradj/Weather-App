@@ -6,7 +6,7 @@
     "sdkVersion": "35.0.0",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dyarfarad.weatherapp"
+      "bundleIdentifier": "com.dyarfaradj.weatherapp"
     },
     "platforms": [
       "ios",

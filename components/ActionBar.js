@@ -103,14 +103,15 @@ export default class ActionBar extends Component {
     });
   }
   handleSelectItem(item, index) {
-    this.setState({
+    this.setState(prevState => ({
       settings: {
+        ...prevState.settings,
         lon: item.lon.toFixed(3),
         lat: item.lat.toFixed(3),
         location: item.place
       },
       currentSelectedPlace: item.place
-    });
+    }));
     this.getData();
   }
 
