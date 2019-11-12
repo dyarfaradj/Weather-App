@@ -25,7 +25,6 @@ export function saveFavorite(data) {
 
 export function reloadWeatherData(info, currentSettings) {
   if (!info) info = { lon: "14.333", lat: "60.383" };
-  console.log("fetching:  ", info);
   dispatcher.dispatch({ type: "FETCH_TODOS", info });
   fetch(
     "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/" +
@@ -45,7 +44,6 @@ export function reloadWeatherData(info, currentSettings) {
         data: data
       });
       if (currentSettings) {
-        console.log("ACION: ", currentSettings);
         dispatcher.dispatch({
           type: "SAVE_SETTINGS",
           data: currentSettings
