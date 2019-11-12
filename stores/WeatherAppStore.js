@@ -65,7 +65,9 @@ class WeatherAppStore extends EventEmitter {
 
   saveSettings(data) {
     this.settings = data;
-    _storeData("settings", this.settings);
+    _storeData("settings", this.settings).then(() => {
+      this.emit("changeSettings");
+    });
   }
 
   saveFavorite(data) {
@@ -113,7 +115,6 @@ class WeatherAppStore extends EventEmitter {
       }
       case "SAVE_SETTINGS": {
         this.saveSettings(action.data);
-        this.emit("changeSettings");
         break;
       }
       case "SAVE_FAVORITE": {

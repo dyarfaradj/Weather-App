@@ -8,7 +8,8 @@ import {
   PanResponder,
   Dimensions,
   UIManager,
-  LayoutAnimation
+  LayoutAnimation,
+  TouchableHighlight
 } from "react-native";
 
 export default class ListItem extends Component {
@@ -45,6 +46,7 @@ export default class ListItem extends Component {
       style: { transform: [{ translateX: dx }] }
     });
   };
+
   onPanResponderRelease = gestureState => {
     if (Math.abs(gestureState.dx) < Dimensions.get("window").width / 2) {
       this.refs["task"].setNativeProps({
@@ -59,7 +61,15 @@ export default class ListItem extends Component {
         style: { transform: [{ translateX: Dimensions.get("window").width }] }
       });
       this.props.handleDeleteTask(this.props.item);
+      this.forceUpdate();
+      this.refs["task"].setNativeProps({
+        style: { transform: [{ translateX: 0 }] }
+      });
     }
+  };
+
+  onPress = () => {
+    this.props.handleClickItem(this.props.item);
   };
 
   render() {
@@ -74,7 +84,9 @@ export default class ListItem extends Component {
           style={styles.item}
           {...this.panResponder.panHandlers}
         >
-          <Text style={[styles.text, { flex: 1 }]}> {this.props.item}</Text>
+          <TouchableHighlight style={{ flex: 1 }} onPress={this.onPress}>
+            <Text style={[styles.text, { flex: 1 }]}> {this.props.item}</Text>
+          </TouchableHighlight>
           <TouchableOpacity>
             <View style={styles.menu}></View>
             <View style={styles.menu}></View>

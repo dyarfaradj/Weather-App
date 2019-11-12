@@ -24,12 +24,13 @@ import { Ionicons } from "@expo/vector-icons";
 export default class ActionBar extends Component {
   constructor() {
     super();
+    const currentSettings = weatherAppStore.getSettings();
     this.state = {
       apiUrl: "g",
-      settings: weatherAppStore.getSettings(),
+      settings: currentSettings,
       favorites: weatherAppStore.getFavorites(),
       error: "",
-      currentSelectedPlace: ""
+      currentSelectedPlace: currentSettings.location
     };
   }
 
@@ -48,8 +49,10 @@ export default class ActionBar extends Component {
     });
   };
   getSettingsData = () => {
+    const currentSettings = weatherAppStore.getSettings();
     this.setState({
-      settings: weatherAppStore.getSettings()
+      settings: currentSettings,
+      currentSelectedPlace: currentSettings.location
     });
   };
 
@@ -156,7 +159,7 @@ export default class ActionBar extends Component {
           <View style={styles.autocompletesContainer}>
             <SafeAreaView>
               <Autocomplete
-                initialValue={this.state.settings.location}
+                inputValue={this.state.currentSelectedPlace}
                 inputStyle={styles.input}
                 inputContainerStyle={styles.inputContainer2}
                 containerStyle={styles.pickerStyle}
@@ -192,6 +195,7 @@ export default class ActionBar extends Component {
                 rightTextExtractor={item =>
                   item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
                 }
+                initialValue={this.state.currentSelectedPlace}
               />
             </SafeAreaView>
           </View>

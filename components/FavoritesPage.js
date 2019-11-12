@@ -32,6 +32,13 @@ export default class FavoritesPage extends Component {
     }
   };
 
+  handleClickItem = item => {
+    let currentSettings = weatherAppStore.getSettings();
+    currentSettings.location = item;
+    WeatherAppActions.saveSettings(currentSettings);
+    this.props.navigation.navigate("Home");
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -51,6 +58,7 @@ export default class FavoritesPage extends Component {
               item={item}
               index={index}
               handleDeleteTask={this.handleDeleteTask}
+              handleClickItem={this.handleClickItem}
             />
           )}
         />
