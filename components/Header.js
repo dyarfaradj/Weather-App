@@ -10,7 +10,6 @@ import {
 import { Header, Icon } from "react-native-elements";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
-import { ScreenOrientation } from "expo";
 export default class NavigationMenu extends Component {
   constructor(props) {
     super(props);
@@ -25,9 +24,7 @@ export default class NavigationMenu extends Component {
     AppState.addEventListener("change", this._handleAppStateChange);
     weatherAppStore.on("changeLastTimeFetched", this.getFetchedTime);
   }
-  componentDidMount() {
-    ScreenOrientation.getPlatformOrientationLockAsync();
-  }
+
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
     weatherAppStore.removeListener(
