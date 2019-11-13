@@ -7,8 +7,8 @@ import {
   View,
   SafeAreaView
 } from "react-native";
-import CustomButton from "./Utils/CustomButton";
-import CustomInputfield from "./Utils/CustomInputfield";
+import CustomButton from "./utils/CustomButton";
+import CustomInputfield from "./utils/CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
@@ -141,82 +141,82 @@ export default class ActionBar extends Component {
         style={styles.inputContainer}
       >
         {this.state.settings &&
-        this.state.favorites &&
-        this.state.settings.coordinates ? (
-          <>
-            <CustomInputfield
-              color="#ffffff"
-              label="Longitude"
-              placeholder={"Enter..."}
-              keyboardType="numeric"
-              onChangeText={text => this.onInputChange("lon", text)}
-              name="lon"
-              value={this.state.settings.lon}
-              errorMessage={this.state.error1}
-              returnKeyType={"next"}
-            ></CustomInputfield>
-            <CustomInputfield
-              color="#ffffff"
-              label="Latitude"
-              placeholder="Enter..."
-              keyboardType="numeric"
-              returnKeyType={"Search"}
-              onChangeText={text => this.onInputChange("lat", text)}
-              name="lat"
-              value={this.state.settings.lat}
-              errorMessage={this.state.error2}
-            ></CustomInputfield>
-            <CustomButton
-              onPress={() => this.getData()}
-              title="Search"
-            ></CustomButton>
-          </>
-        ) : (
-          <View style={styles.autocompletesContainer}>
-            <SafeAreaView>
-              <Autocomplete
-                key={this.state.currentSelectedPlace}
-                inputStyle={styles.input}
-                inputContainerStyle={styles.inputContainer2}
-                containerStyle={styles.pickerStyle}
-                spinnerStyle={styles.spinnerStyle}
-                placeholder="Enter a location..."
-                spinnerColor="white"
-                handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
-                onChangeText={text => this.onInputChangeAPI(text)}
-                renderIcon={() => (
-                  <Ionicons
-                    style={styles.starIcon}
-                    name="ios-star"
-                    size={40}
-                    color={
-                      this.state.favorites &&
-                      this.state.favorites.some(
-                        item => item.place === this.state.currentSelectedPlace
-                      )
-                        ? "#ffff00"
-                        : "#c7c6c1"
-                    }
-                    onPress={() =>
-                      this.toggleFavorite(this.state.currentSelectedPlace)
-                    }
-                  />
-                )}
-                fetchDataUrl={
-                  "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
-                  this.state.apiUrl
-                }
-                minimumCharactersCount={1}
-                highlightText
-                valueExtractor={item => item.place}
-                rightTextExtractor={item =>
-                  item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
-                }
-                initialValue={this.state.currentSelectedPlace}
-              />
-            </SafeAreaView>
-          </View>
-        )}
+          this.state.favorites &&
+          this.state.settings.coordinates ? (
+            <>
+              <CustomInputfield
+                color="#ffffff"
+                label="Longitude"
+                placeholder={"Enter..."}
+                keyboardType="numeric"
+                onChangeText={text => this.onInputChange("lon", text)}
+                name="lon"
+                value={this.state.settings.lon}
+                errorMessage={this.state.error1}
+                returnKeyType={"next"}
+              ></CustomInputfield>
+              <CustomInputfield
+                color="#ffffff"
+                label="Latitude"
+                placeholder="Enter..."
+                keyboardType="numeric"
+                returnKeyType={"Search"}
+                onChangeText={text => this.onInputChange("lat", text)}
+                name="lat"
+                value={this.state.settings.lat}
+                errorMessage={this.state.error2}
+              ></CustomInputfield>
+              <CustomButton
+                onPress={() => this.getData()}
+                title="Search"
+              ></CustomButton>
+            </>
+          ) : (
+            <View style={styles.autocompletesContainer}>
+              <SafeAreaView>
+                <Autocomplete
+                  key={this.state.currentSelectedPlace}
+                  inputStyle={styles.input}
+                  inputContainerStyle={styles.inputContainer2}
+                  containerStyle={styles.pickerStyle}
+                  spinnerStyle={styles.spinnerStyle}
+                  placeholder="Enter a location..."
+                  spinnerColor="white"
+                  handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
+                  onChangeText={text => this.onInputChangeAPI(text)}
+                  renderIcon={() => (
+                    <Ionicons
+                      style={styles.starIcon}
+                      name="ios-star"
+                      size={40}
+                      color={
+                        this.state.favorites &&
+                          this.state.favorites.some(
+                            item => item.place === this.state.currentSelectedPlace
+                          )
+                          ? "#ffff00"
+                          : "#c7c6c1"
+                      }
+                      onPress={() =>
+                        this.toggleFavorite(this.state.currentSelectedPlace)
+                      }
+                    />
+                  )}
+                  fetchDataUrl={
+                    "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
+                    this.state.apiUrl
+                  }
+                  minimumCharactersCount={1}
+                  highlightText
+                  valueExtractor={item => item.place}
+                  rightTextExtractor={item =>
+                    item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
+                  }
+                  initialValue={this.state.currentSelectedPlace}
+                />
+              </SafeAreaView>
+            </View>
+          )}
       </LinearGradient>
     );
   }
