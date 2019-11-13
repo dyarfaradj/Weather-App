@@ -3,8 +3,7 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
-  ScrollView,
-  Dimensions
+  ScrollView
 } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";

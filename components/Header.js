@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
   AppState
 } from "react-native";
 import { Header, Icon } from "react-native-elements";

@@ -7,7 +7,6 @@ import {
   View,
   SafeAreaView
 } from "react-native";
-import { Icon } from "react-native-elements";
 import CustomButton from "./CustomButton";
 import CustomInputfield from "./CustomInputfield";
 import { LinearGradient } from "expo-linear-gradient";

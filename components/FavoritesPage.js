@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, FlatList, Text, Switch } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import Header from "./Header";

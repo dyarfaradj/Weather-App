@@ -7,8 +7,8 @@ function pad2(number) {
   return (number < 10 ? "0" : "") + number;
 }
 function degToCompass(num) {
-  var val = Math.floor(num / 22.5 + 0.5);
-  var arr = [
+  var index = Math.floor(num / 22.5 + 0.5);
+  var values = [
     "N",
     "NNE",
     "NE",
@@ -26,11 +26,11 @@ function degToCompass(num) {
     "NW",
     "NNW"
   ];
-  return arr[val % 16];
+  return values[index % 16];
 }
 
 function valueToOkta(num) {
-  var arr = [
+  var values = [
     "Sky clear",
     "Few",
     "Few",
@@ -41,7 +41,7 @@ function valueToOkta(num) {
     "Overcast",
     "Sky obstructed"
   ];
-  return arr[num];
+  return values[num];
 }
 export default WeathCard = props => {
   return (

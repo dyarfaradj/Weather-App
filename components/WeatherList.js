@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import WeatherCard from "./WeatherCard";
-import weatherAppStore from "../stores/WeatherAppStore";
-
 export default class WeathList extends Component {
   constructor() {
     super();
