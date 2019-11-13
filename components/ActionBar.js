@@ -14,10 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
 import {
-  Autocomplete,
-  withKeyboardAwareScrollView,
-  Dropdown,
-  DropdownItem
+  Autocomplete
 } from "react-native-dropdown-autocomplete";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -53,7 +50,7 @@ export default class ActionBar extends Component {
     if (currentSettings.location != this.state.currentSelectedPlace) {
       fetch(
         "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
-          currentSettings.location
+        currentSettings.location
       )
         .then(data => data.json())
         .then(data => {
@@ -151,7 +148,7 @@ export default class ActionBar extends Component {
         end={[0, 0]}
         style={styles.inputContainer}
       >
-        {this.state.settings.coordinates ? (
+        {this.state.settings && this.state.favorites && this.state.settings.coordinates ? (
           <>
             <CustomInputfield
               color="#ffffff"
@@ -181,50 +178,50 @@ export default class ActionBar extends Component {
             ></CustomButton>
           </>
         ) : (
-          <View style={styles.autocompletesContainer}>
-            <SafeAreaView>
-              <Autocomplete
-                key={this.state.currentSelectedPlace}
-                inputStyle={styles.input}
-                inputContainerStyle={styles.inputContainer2}
-                containerStyle={styles.pickerStyle}
-                spinnerStyle={styles.spinnerStyle}
-                placeholder="Enter a location..."
-                spinnerColor="white"
-                handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
-                onChangeText={text => this.onInputChangeAPI(text)}
-                renderIcon={() => (
-                  <Ionicons
-                    style={styles.starIcon}
-                    name="ios-star"
-                    size={40}
-                    color={
-                      this.state.favorites.includes(
-                        this.state.currentSelectedPlace
-                      )
-                        ? "#ffff00"
-                        : "#c7c6c1"
-                    }
-                    onPress={() =>
-                      this.toggleFavorite(this.state.currentSelectedPlace)
-                    }
-                  />
-                )}
-                fetchDataUrl={
-                  "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
-                  this.state.apiUrl
-                }
-                minimumCharactersCount={1}
-                highlightText
-                valueExtractor={item => item.place}
-                rightTextExtractor={item =>
-                  item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
-                }
-                initialValue={this.state.currentSelectedPlace}
-              />
-            </SafeAreaView>
-          </View>
-        )}
+            <View style={styles.autocompletesContainer}>
+              <SafeAreaView>
+                <Autocomplete
+                  key={this.state.currentSelectedPlace}
+                  inputStyle={styles.input}
+                  inputContainerStyle={styles.inputContainer2}
+                  containerStyle={styles.pickerStyle}
+                  spinnerStyle={styles.spinnerStyle}
+                  placeholder="Enter a location..."
+                  spinnerColor="white"
+                  handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
+                  onChangeText={text => this.onInputChangeAPI(text)}
+                  renderIcon={() => (
+                    <Ionicons
+                      style={styles.starIcon}
+                      name="ios-star"
+                      size={40}
+                      color={
+                        this.state.favorites && this.state.favorites.includes(
+                          this.state.currentSelectedPlace
+                        )
+                          ? "#ffff00"
+                          : "#c7c6c1"
+                      }
+                      onPress={() =>
+                        this.toggleFavorite(this.state.currentSelectedPlace)
+                      }
+                    />
+                  )}
+                  fetchDataUrl={
+                    "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
+                    this.state.apiUrl
+                  }
+                  minimumCharactersCount={1}
+                  highlightText
+                  valueExtractor={item => item.place}
+                  rightTextExtractor={item =>
+                    item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
+                  }
+                  initialValue={this.state.currentSelectedPlace}
+                />
+              </SafeAreaView>
+            </View>
+          )}
       </LinearGradient>
     );
   }

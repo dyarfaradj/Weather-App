@@ -9,9 +9,10 @@ export default class WeathList extends Component {
   }
 
   render() {
+    const dataList = this.props.list;
     return (
       <View style={styles.container}>
-        {this.props.list.map((item, id) => {
+        {dataList && dataList.map((item, id) => {
           return <WeatherCard key={id} data={item} />;
         })}
       </View>

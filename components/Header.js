@@ -44,10 +44,12 @@ export default class NavigationMenu extends Component {
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      let inactiveTime = this.state.settings.updateInterval * 60 * 1000;
-      let totalTime = Date.now() - new Date(this.state.lastTimeFetched);
-      if (totalTime > inactiveTime) {
-        WeatherAppActions.reloadWeatherData();
+      if (this.state.settings) {
+        let inactiveTime = this.state.settings.updateInterval * 60 * 1000;
+        let totalTime = Date.now() - new Date(this.state.lastTimeFetched);
+        if (totalTime > inactiveTime) {
+          WeatherAppActions.reloadWeatherData();
+        }
       }
     }
     this.setState({ appState: nextAppState });
@@ -70,7 +72,7 @@ export default class NavigationMenu extends Component {
           />
         }
         centerComponent={{ text: this.props.title, style: { color: "#fff" } }}
-        // rightComponent={{ icon: "home", color: "#fff" }}
+      // rightComponent={{ icon: "home", color: "#fff" }}
       />
     );
   }

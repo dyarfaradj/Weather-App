@@ -5,22 +5,17 @@ import {
   _storeData,
   clearAllData
 } from "../utils/AsyncStorageHandler";
+import { defaultData } from "../utils/DefaultData";
 import dispatcher from "./dispatcher";
 
 class WeatherAppStore extends EventEmitter {
   constructor() {
     super();
-    this.approvedTime = "";
-    this.lastTimeFetched = "";
-    this.data = [];
-    this.settings = {
-      coordinates: true,
-      lon: "",
-      lat: "",
-      location: "",
-      updateInterval: "10"
-    };
-    this.favorites = ["Gävle", "Örebro", "Kiruna", "Stockholm"];
+    this.approvedTime = defaultData.approvedTime;
+    this.lastTimeFetched = defaultData.lastTimeFetched;
+    this.data = defaultData.data;
+    this.settings = defaultData.settings;
+    this.favorites = defaultData.favorites;
     this.loadData();
     this.loadApprovedTime();
     this.loadLastTimeFetched();
@@ -29,23 +24,34 @@ class WeatherAppStore extends EventEmitter {
   }
 
   loadData = async () => {
-    this.data = await _retrieveData("weatherData");
+    const retrievedData = await _retrieveData("weatherData");
+    if (retrievedData)
+      this.data = retrievedData;
+    // clearAllData();
   };
 
   loadApprovedTime = async () => {
-    this.approvedTime = await _retrieveData("approvedTime");
+    const retrievedApprovedTime = await _retrieveData("approvedTime");
+    if (retrievedApprovedTime)
+      this.approvedTime = retrievedApprovedTime;
   };
 
   loadLastTimeFetched = async () => {
-    this.lastTimeFetched = await _retrieveData("lastTimeFetched");
+    const retrievedLastTimeFetched = await _retrieveData("lastTimeFetched");
+    if (retrievedLastTimeFetched)
+      this.lastTimeFetched = retrievedLastTimeFetched;
   };
 
   loadSettings = async () => {
-    this.settings = await _retrieveData("settings");
+    const retrievedSettings = await _retrieveData("settings");
+    if (retrievedSettings)
+      this.settings = retrievedSettings;
   };
 
   loadFavorites = async () => {
-    this.favorites = await _retrieveData("favorites");
+    const retrievedFavorites = await _retrieveData("favorites");
+    if (retrievedFavorites)
+      this.favorites = retrievedFavorites;
   };
 
   saveData(data) {
