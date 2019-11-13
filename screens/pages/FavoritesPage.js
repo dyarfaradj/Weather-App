@@ -34,7 +34,9 @@ export default class FavoritesPage extends Component {
 
   handleClickItem = item => {
     let currentSettings = weatherAppStore.getSettings();
-    currentSettings.location = item;
+    currentSettings.location = item.place;
+    currentSettings.lat = item.lat;
+    currentSettings.lon = item.lon;
     WeatherAppActions.saveSettings(currentSettings);
     this.props.navigation.navigate("Home");
   };
@@ -45,7 +47,11 @@ export default class FavoritesPage extends Component {
         <Header title="Favorites" navigation={this.props.navigation} />
         <FlatList
           data={this.state.favorites}
-          keyExtractor={item => this.state.favorites.indexOf(item).toString()}
+          keyExtractor={item =>
+            this.state.favorites
+              .findIndex(fav => fav.place === item.place)
+              .toString()
+          }
           ItemSeparatorComponent={() => (
             <View style={styles.itemSeperator}></View>
           )}

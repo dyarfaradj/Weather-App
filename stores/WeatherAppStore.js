@@ -25,15 +25,13 @@ class WeatherAppStore extends EventEmitter {
 
   loadData = async () => {
     const retrievedData = await _retrieveData("weatherData");
-    if (retrievedData)
-      this.data = retrievedData;
-    // clearAllData();
+    if (retrievedData) this.data = retrievedData;
+    //clearAllData();
   };
 
   loadApprovedTime = async () => {
     const retrievedApprovedTime = await _retrieveData("approvedTime");
-    if (retrievedApprovedTime)
-      this.approvedTime = retrievedApprovedTime;
+    if (retrievedApprovedTime) this.approvedTime = retrievedApprovedTime;
   };
 
   loadLastTimeFetched = async () => {
@@ -44,14 +42,12 @@ class WeatherAppStore extends EventEmitter {
 
   loadSettings = async () => {
     const retrievedSettings = await _retrieveData("settings");
-    if (retrievedSettings)
-      this.settings = retrievedSettings;
+    if (retrievedSettings) this.settings = retrievedSettings;
   };
 
   loadFavorites = async () => {
     const retrievedFavorites = await _retrieveData("favorites");
-    if (retrievedFavorites)
-      this.favorites = retrievedFavorites;
+    if (retrievedFavorites) this.favorites = retrievedFavorites;
   };
 
   saveData(data) {
@@ -77,9 +73,12 @@ class WeatherAppStore extends EventEmitter {
   }
 
   saveFavorite(data) {
-    var found = this.favorites.includes(data);
+    var found = this.favorites.some(item => item.place === data.place);
     if (found) {
-      this.favorites.splice(this.favorites.indexOf(data), 1);
+      this.favorites.splice(
+        this.favorites.findIndex(item => item.place === data.place),
+        1
+      );
     } else {
       this.favorites.push(data);
     }

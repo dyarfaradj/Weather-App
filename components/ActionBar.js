@@ -42,31 +42,21 @@ export default class ActionBar extends Component {
       favorites: weatherAppStore.getFavorites()
     });
   };
+
   getSettingsData = () => {
     const currentSettings = weatherAppStore.getSettings();
     if (currentSettings.location != this.state.currentSelectedPlace) {
-      fetch(
-        "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
-          currentSettings.location
-      )
-        .then(data => data.json())
-        .then(data => {
-          this.setState(prevState => ({
-            settings: {
-              ...prevState.settings,
-              lon: data[0].lon.toFixed(3),
-              lat: data[0].lat.toFixed(3)
-            }
-          }));
-        })
-        .then(() => {
-          this.getData();
-        });
+      this.setState({
+        settings: currentSettings,
+        currentSelectedPlace: currentSettings.location
+      });
+      this.getData();
+    } else {
+      this.setState({
+        settings: currentSettings,
+        currentSelectedPlace: currentSettings.location
+      });
     }
-    this.setState({
-      settings: currentSettings,
-      currentSelectedPlace: currentSettings.location
-    });
   };
 
   onInputChange = (name, value) => {
@@ -86,7 +76,12 @@ export default class ActionBar extends Component {
 
   toggleFavorite = item => {
     if (item) {
-      WeatherAppActions.saveFavorite(item);
+      const newFavorite = {
+        place: item,
+        lon: this.state.settings.lon,
+        lat: this.state.settings.lat
+      };
+      WeatherAppActions.saveFavorite(newFavorite);
     }
   };
 
@@ -196,8 +191,8 @@ export default class ActionBar extends Component {
                     size={40}
                     color={
                       this.state.favorites &&
-                      this.state.favorites.includes(
-                        this.state.currentSelectedPlace
+                      this.state.favorites.some(
+                        item => item.place === this.state.currentSelectedPlace
                       )
                         ? "#ffff00"
                         : "#c7c6c1"

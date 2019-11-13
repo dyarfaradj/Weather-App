@@ -85,7 +85,10 @@ export default class ListItem extends Component {
           {...this.panResponder.panHandlers}
         >
           <TouchableHighlight style={{ flex: 1 }} onPress={this.onPress}>
-            <Text style={[styles.text, { flex: 1 }]}> {this.props.item}</Text>
+            <Text style={[styles.text, { flex: 1 }]}>
+              {" "}
+              {this.props.item.place}
+            </Text>
           </TouchableHighlight>
           <TouchableOpacity>
             <View style={styles.menu}></View>
