@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { ListItem } from "react-native-elements";
-import { weatherIcon } from "../utils/ImageHandler";
+import { weatherIcon } from "../../utils/ImageHandler";
 import moment from "moment";
 function pad2(number) {
   return (number < 10 ? "0" : "") + number;
@@ -75,7 +74,7 @@ export default WeathCard = props => {
           ]
         }}
         resizeMode="contain"
-        source={require("../assets/images/arrow.png")}
+        source={require("../../assets/images/arrow.png")}
       />
       <View style={styles.contentContainer}>
         <Text style={styles.wind}>

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
-import * as WeatherAppActions from "../actions/WeatherAppActions";
-import weatherAppStore from "../stores/WeatherAppStore";
-import Header from "./Header";
-import ListItem from "./ListItem";
+import * as WeatherAppActions from "../../actions/WeatherAppActions";
+import weatherAppStore from "../../stores/WeatherAppStore";
+import Header from "../../components/Header";
+import ListItem from "../../components/ListItem";
 
 export default class FavoritesPage extends Component {
   constructor(props) {

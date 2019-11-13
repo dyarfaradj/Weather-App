@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SettingsPage from "../components/SettingsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 export default class HomeScreen extends Component {
   render() {

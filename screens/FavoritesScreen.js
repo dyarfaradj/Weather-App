@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FavoritesPage from "../components/FavoritesPage";
+import FavoritesPage from "./pages/FavoritesPage";
 
 export default class FavoritesScreen extends Component {
   render() {

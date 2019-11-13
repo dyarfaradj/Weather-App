@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Switch, Slider } from "react-native";
-import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
-import * as WeatherAppActions from "../actions/WeatherAppActions";
-import weatherAppStore from "../stores/WeatherAppStore";
-import Header from "./Header";
+import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
+import * as WeatherAppActions from "../../actions/WeatherAppActions";
+import weatherAppStore from "../../stores/WeatherAppStore";
+import Header from "../../components/Header";
 
 export default class SettingsPage extends Component {
   constructor(props) {

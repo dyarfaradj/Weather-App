@@ -8,13 +8,13 @@ import {
   Text,
   NetInfo
 } from "react-native";
-import WeatherList from "./WeatherList";
-import ActionBar from "./ActionBar";
-import { _retrieveData, _storeData } from "../utils/AsyncStorageHandler";
-import * as WeatherAppActions from "../actions/WeatherAppActions";
-import weatherAppStore from "../stores/WeatherAppStore";
-import Header from "./Header";
-import OfflineBar from "./OfflineBar";
+import WeatherList from "../../components/Weather/WeatherList";
+import ActionBar from "../../components/ActionBar";
+import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
+import * as WeatherAppActions from "../../actions/WeatherAppActions";
+import weatherAppStore from "../../stores/WeatherAppStore";
+import Header from "../../components/Header";
+import OfflineBar from "../../components/OfflineBar";
 import moment from "moment";
 
 export default class FrontPage extends Component {
