@@ -53,7 +53,7 @@ export function reloadWeatherData(info, currentSettings) {
         type: "SAVE_LAST_TIME_FETCHED",
         data: data
       });
-      console.log("fetched data and store");
+      //console.log("fetched data and store");
     })
     .catch(error => {
       Alert.alert(

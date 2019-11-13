@@ -278,7 +278,7 @@ const defaultData = {
     }
   ],
   settings: {
-    coordinates: true,
+    coordinates: false,
     lon: "18.063",
     lat: "59.329",
     location: "Stockholm",
