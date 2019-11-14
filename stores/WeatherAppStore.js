@@ -7,6 +7,10 @@ import {
 } from "../utils/AsyncStorageHandler";
 import { defaultData } from "../utils/DefaultData";
 import dispatcher from "./dispatcher";
+import { listenerCount } from "cluster";
+
+// Stores data and sends events to components who listenerCount.apply
+// Loads data from AsyncStorage and sends to components, also handles stores data
 
 class WeatherAppStore extends EventEmitter {
   constructor() {
