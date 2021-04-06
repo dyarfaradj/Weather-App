@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Keyboard,
-  NetInfo,
-  Alert,
-  View,
-  SafeAreaView
-} from "react-native";
-import CustomButton from "./utils/CustomButton";
+import { StyleSheet, Keyboard, Alert, View, SafeAreaView } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 import CustomInputfield from "./utils/CustomInputfield";
+import CustomButton from "./utils/CustomButton";
 import { LinearGradient } from "expo-linear-gradient";
 import * as WeatherAppActions from "../actions/WeatherAppActions";
 import weatherAppStore from "../stores/WeatherAppStore";
@@ -24,7 +18,7 @@ export default class ActionBar extends Component {
       settings: currentSettings,
       favorites: weatherAppStore.getFavorites(),
       error: "",
-      currentSelectedPlace: currentSettings.location
+      currentSelectedPlace: currentSettings.location,
     };
   }
 
@@ -39,7 +33,7 @@ export default class ActionBar extends Component {
   }
   getFavoritesData = () => {
     this.setState({
-      favorites: weatherAppStore.getFavorites()
+      favorites: weatherAppStore.getFavorites(),
     });
   };
 
@@ -48,86 +42,86 @@ export default class ActionBar extends Component {
     if (currentSettings.location != this.state.currentSelectedPlace) {
       this.setState({
         settings: currentSettings,
-        currentSelectedPlace: currentSettings.location
+        currentSelectedPlace: currentSettings.location,
       });
       this.getData();
     } else {
       this.setState({
         settings: currentSettings,
-        currentSelectedPlace: currentSettings.location
+        currentSelectedPlace: currentSettings.location,
       });
     }
   };
 
   onInputChange = (name, value) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       settings: {
         ...prevState.settings,
-        [name]: value.replace(",", ".")
-      }
+        [name]: value.replace(",", "."),
+      },
     }));
   };
 
-  onInputChangeAPI = value => {
+  onInputChangeAPI = (value) => {
     this.setState({
-      apiUrl: value
+      apiUrl: value,
     });
   };
 
-  toggleFavorite = item => {
+  toggleFavorite = (item) => {
     if (item) {
       const newFavorite = {
         place: item,
         lon: this.state.settings.lon,
-        lat: this.state.settings.lat
+        lat: this.state.settings.lat,
       };
       WeatherAppActions.saveFavorite(newFavorite);
     }
   };
 
   getData() {
-    NetInfo.isConnected.fetch().then(isConnected => {
-      if (isConnected) {
-        this.setState({ error1: "", error2: "" });
-        let info = {
-          lon: this.state.settings.lon,
-          lat: this.state.settings.lat
-        };
-        let currentSettings = this.state.settings;
-        if (!currentSettings.coordinates) {
-          WeatherAppActions.reloadWeatherData(info, currentSettings);
-          Keyboard.dismiss();
-        } else {
-          if (this.state.settings.lon === "") {
-            this.setState({ error1: "Fel" });
-          }
-          if (this.state.settings.lat === "") {
-            this.setState({ error2: "Fel" });
-          }
-          if (this.state.settings.lat != "" && this.state.settings.lon != "") {
-            WeatherAppActions.reloadWeatherData(info, currentSettings);
-            Keyboard.dismiss();
-          }
-        }
-      } else {
-        Alert.alert(
-          "Internet Connection",
-          "Please check your connection",
-          [{ text: "OK" }],
-          { cancelable: false }
-        );
-      }
-    });
+    // NetInfo.isConnected.fetch().then((isConnected) => {
+    //   if (isConnected) {
+    //     this.setState({ error1: "", error2: "" });
+    //     let info = {
+    //       lon: this.state.settings.lon,
+    //       lat: this.state.settings.lat,
+    //     };
+    //     let currentSettings = this.state.settings;
+    //     if (!currentSettings.coordinates) {
+    //       WeatherAppActions.reloadWeatherData(info, currentSettings);
+    //       Keyboard.dismiss();
+    //     } else {
+    //       if (this.state.settings.lon === "") {
+    //         this.setState({ error1: "Fel" });
+    //       }
+    //       if (this.state.settings.lat === "") {
+    //         this.setState({ error2: "Fel" });
+    //       }
+    //       if (this.state.settings.lat != "" && this.state.settings.lon != "") {
+    //         WeatherAppActions.reloadWeatherData(info, currentSettings);
+    //         Keyboard.dismiss();
+    //       }
+    //     }
+    //   } else {
+    //     Alert.alert(
+    //       "Internet Connection",
+    //       "Please check your connection",
+    //       [{ text: "OK" }],
+    //       { cancelable: false }
+    //     );
+    //   }
+    // });
   }
   handleSelectItem(item, index) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       settings: {
         ...prevState.settings,
         lon: item.lon.toFixed(3),
         lat: item.lat.toFixed(3),
-        location: item.place
+        location: item.place,
       },
-      currentSelectedPlace: item.place
+      currentSelectedPlace: item.place,
     }));
     this.getData();
   }
@@ -141,82 +135,82 @@ export default class ActionBar extends Component {
         style={styles.inputContainer}
       >
         {this.state.settings &&
-          this.state.favorites &&
-          this.state.settings.coordinates ? (
-            <>
-              <CustomInputfield
-                color="#ffffff"
-                label="Longitude"
-                placeholder={"Enter..."}
-                keyboardType="numeric"
-                onChangeText={text => this.onInputChange("lon", text)}
-                name="lon"
-                value={this.state.settings.lon}
-                errorMessage={this.state.error1}
-                returnKeyType={"next"}
-              ></CustomInputfield>
-              <CustomInputfield
-                color="#ffffff"
-                label="Latitude"
-                placeholder="Enter..."
-                keyboardType="numeric"
-                returnKeyType={"Search"}
-                onChangeText={text => this.onInputChange("lat", text)}
-                name="lat"
-                value={this.state.settings.lat}
-                errorMessage={this.state.error2}
-              ></CustomInputfield>
-              <CustomButton
-                onPress={() => this.getData()}
-                title="Search"
-              ></CustomButton>
-            </>
-          ) : (
-            <View style={styles.autocompletesContainer}>
-              <SafeAreaView>
-                <Autocomplete
-                  key={this.state.currentSelectedPlace}
-                  inputStyle={styles.input}
-                  inputContainerStyle={styles.inputContainer2}
-                  containerStyle={styles.pickerStyle}
-                  spinnerStyle={styles.spinnerStyle}
-                  placeholder="Enter a location..."
-                  spinnerColor="white"
-                  handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
-                  onChangeText={text => this.onInputChangeAPI(text)}
-                  renderIcon={() => (
-                    <Ionicons
-                      style={styles.starIcon}
-                      name="ios-star"
-                      size={40}
-                      color={
-                        this.state.favorites &&
-                          this.state.favorites.some(
-                            item => item.place === this.state.currentSelectedPlace
-                          )
-                          ? "#ffff00"
-                          : "#c7c6c1"
-                      }
-                      onPress={() =>
-                        this.toggleFavorite(this.state.currentSelectedPlace)
-                      }
-                    />
-                  )}
-                  fetchDataUrl={
-                    "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
-                    this.state.apiUrl
-                  }
-                  minimumCharactersCount={1}
-                  highlightText
-                  valueExtractor={item => item.place}
-                  rightTextExtractor={item =>
-                    item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
-                  }
-                  initialValue={this.state.currentSelectedPlace}
-                />
-              </SafeAreaView>
-            </View>
-          )}
+        this.state.favorites &&
+        this.state.settings.coordinates ? (
+          <>
+            <CustomInputfield
+              color="#ffffff"
+              label="Longitude"
+              placeholder={"Enter..."}
+              keyboardType="numeric"
+              onChangeText={(text) => this.onInputChange("lon", text)}
+              name="lon"
+              value={this.state.settings.lon}
+              errorMessage={this.state.error1}
+              returnKeyType={"next"}
+            ></CustomInputfield>
+            <CustomInputfield
+              color="#ffffff"
+              label="Latitude"
+              placeholder="Enter..."
+              keyboardType="numeric"
+              returnKeyType={"Search"}
+              onChangeText={(text) => this.onInputChange("lat", text)}
+              name="lat"
+              value={this.state.settings.lat}
+              errorMessage={this.state.error2}
+            ></CustomInputfield>
+            <CustomButton
+              onPress={() => this.getData()}
+              title="Search"
+            ></CustomButton>
+          </>
+        ) : (
+          <View style={styles.autocompletesContainer}>
+            <SafeAreaView>
+              <Autocomplete
+                key={this.state.currentSelectedPlace}
+                inputStyle={styles.input}
+                inputContainerStyle={styles.inputContainer2}
+                containerStyle={styles.pickerStyle}
+                spinnerStyle={styles.spinnerStyle}
+                placeholder="Enter a location..."
+                spinnerColor="white"
+                handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
+                onChangeText={(text) => this.onInputChangeAPI(text)}
+                renderIcon={() => (
+                  <Ionicons
+                    style={styles.starIcon}
+                    name="ios-star"
+                    size={40}
+                    color={
+                      this.state.favorites &&
+                      this.state.favorites.some(
+                        (item) => item.place === this.state.currentSelectedPlace
+                      )
+                        ? "#ffff00"
+                        : "#c7c6c1"
+                    }
+                    onPress={() =>
+                      this.toggleFavorite(this.state.currentSelectedPlace)
+                    }
+                  />
+                )}
+                fetchDataUrl={
+                  "http://smhi.se/wpt-a/backend_solr/autocomplete/search/" +
+                  this.state.apiUrl
+                }
+                minimumCharactersCount={1}
+                highlightText
+                valueExtractor={(item) => item.place}
+                rightTextExtractor={(item) =>
+                  item.lat.toFixed(3) + ", " + item.lon.toFixed(3)
+                }
+                initialValue={this.state.currentSelectedPlace}
+              />
+            </SafeAreaView>
+          </View>
+        )}
       </LinearGradient>
     );
   }
@@ -229,18 +223,18 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "auto",
     minHeight: 100,
-    maxHeight: 300
+    maxHeight: 300,
   },
   autocompletesContainer: {
     paddingTop: 0,
     zIndex: 1,
     width: "100%",
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
   input: {
     borderColor: "white",
     maxHeight: 100,
-    color: "white"
+    color: "white",
   },
   inputContainer2: {
     display: "flex",
@@ -253,17 +247,17 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: "5%",
     width: "100%",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   container: {
     flex: 1,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
   },
   spinnerStyle: {
     marginTop: 15,
-    marginRight: 16
+    marginRight: 16,
   },
   starIcon: {
-    paddingRight: 6
-  }
+    paddingRight: 6,
+  },
 });

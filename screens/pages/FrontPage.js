@@ -6,8 +6,8 @@ import {
   ScrollView,
   RefreshControl,
   Text,
-  NetInfo
 } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 import WeatherList from "../../components/Weather/WeatherList";
 import ActionBar from "../../components/ActionBar";
 import { _retrieveData, _storeData } from "../../utils/AsyncStorageHandler";
@@ -24,7 +24,7 @@ export default class FrontPage extends Component {
       fetchedData: weatherAppStore.getData(),
       refreshing: false,
       hasConnection: true,
-      approvedTime: weatherAppStore.getApprovedTime()
+      approvedTime: weatherAppStore.getApprovedTime(),
     };
   }
 
@@ -33,38 +33,38 @@ export default class FrontPage extends Component {
   }
 
   componentDidMount() {
-    NetInfo.isConnected.addEventListener(
-      "connectionChange",
-      this.handleOfflineMode
-    );
+    // NetInfo.isConnected.addEventListener(
+    //   "connectionChange",
+    //   this.handleOfflineMode
+    // );
   }
 
   componentWillUnmount() {
     weatherAppStore.removeListener("change", this.getData);
-    NetInfo.isConnected.removeEventListener(
-      "connectionChange",
-      this.handleConnectivityChange
-    );
+    // NetInfo.isConnected.removeEventListener(
+    //   "connectionChange",
+    //   this.handleConnectivityChange
+    // );
   }
 
   getData = () => {
     this.setState({
       fetchedData: weatherAppStore.getData(),
-      approvedTime: weatherAppStore.getApprovedTime()
+      approvedTime: weatherAppStore.getApprovedTime(),
     });
   };
 
-  handleOfflineMode = hasConnection => {
+  handleOfflineMode = (hasConnection) => {
     this.setState({ hasConnection });
   };
 
   printRefres = () => {
     this.setState({
-      refreshing: true
+      refreshing: true,
     });
     WeatherAppActions.reloadWeatherData();
     this.setState({
-      refreshing: false
+      refreshing: false,
     });
   };
 
@@ -97,7 +97,7 @@ export default class FrontPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   inputContainer: {
     flex: 1,
@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
     width: "100%",
     height: 100,
-    bottom: 0
-  }
+    bottom: 0,
+  },
 });

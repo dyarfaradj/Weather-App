@@ -3,11 +3,11 @@ import { EventEmitter } from "events";
 import {
   _retrieveData,
   _storeData,
-  clearAllData
+  clearAllData,
 } from "../utils/AsyncStorageHandler";
 import { defaultData } from "../utils/DefaultData";
 import dispatcher from "./dispatcher";
-import { listenerCount } from "cluster";
+// import { listenerCount } from "cluster";
 
 // Stores data and sends events to components who listenerCount.apply
 // Loads data from AsyncStorage and sends to components, also handles stores data
@@ -77,10 +77,10 @@ class WeatherAppStore extends EventEmitter {
   }
 
   saveFavorite(data) {
-    var found = this.favorites.some(item => item.place === data.place);
+    var found = this.favorites.some((item) => item.place === data.place);
     if (found) {
       this.favorites.splice(
-        this.favorites.findIndex(item => item.place === data.place),
+        this.favorites.findIndex((item) => item.place === data.place),
         1
       );
     } else {
